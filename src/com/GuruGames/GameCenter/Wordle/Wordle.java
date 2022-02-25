@@ -1,4 +1,7 @@
 package com.GuruGames.GameCenter.Wordle;
+
+import java.util.Random;
+
 /*
 public class Wordle {
     final String WORD=random Enum;
@@ -36,3 +39,11 @@ public class Wordle {
     }
 }
 */
+public class Wordle{
+    public static void main(String[] args) {
+        String WORD= String.valueOf(Words.values()[new Random().nextInt(Words.values().length)]);
+        char[] wordle=WORD.toCharArray();
+        for (var a:wordle)
+            System.out.println(a);
+    }
+}
