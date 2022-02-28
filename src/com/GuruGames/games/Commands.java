@@ -1,4 +1,7 @@
 package com.GuruGames.games;
+
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * <p>Shared Command functionality.</p>
  * <p>Intended <a href="sample/fakeGame.LocalCommands.html">LocalCommand</a> Enum for maintainability</p>
@@ -10,7 +13,7 @@ public interface Commands{
      * @param scannerIn String in from a client scanner
      * @throws IllegalArgumentException Exception originates in implemented parseCommand(String, String...)
      */
-    default void parseCommand(String scannerIn) throws IllegalArgumentException{
+    default void parseCommand(String scannerIn) throws IllegalArgumentException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         String[] strings = scannerIn.split(" ");
         String command = strings[0];
         String[] params = new String[strings.length - 1]; // extract command
@@ -41,7 +44,7 @@ public interface Commands{
      * @param params String from user containing desired parameter(s)
      * @throws IllegalArgumentException Invalid command, parameter, or parameter count; .getMessage() should have details.
      */
-    void parseCommand(String command, String... params) throws IllegalArgumentException;
+    void parseCommand(String command, String... params) throws IllegalArgumentException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException;
 
     /**
      * <p>Gets <a href="sample/fakeGame.LocalCommands.html">local commands</a>, formats them into one string, then returns it.</p>

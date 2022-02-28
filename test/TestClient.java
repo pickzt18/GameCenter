@@ -1,5 +1,6 @@
 import com.GuruGames.GameCenter.GameCenter;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Scanner;
 
 public class TestClient {
@@ -13,6 +14,14 @@ public class TestClient {
                 gc.parseCommand(scannerInput);
             } catch (IllegalArgumentException e){
                 System.out.println(e.getMessage());
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
             }
         }
     }

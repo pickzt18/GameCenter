@@ -1,55 +1,57 @@
 package com.GuruGames.games.sample;
 
-
 import com.GuruGames.games.Game;
+import java.lang.reflect.Method;
+import java.util.Optional;
 
 public class fakegame implements Game {
-    boolean gameOver=false;
-    public fakegame(){
+    boolean gameOver = false;
+    fakegameData data;
+    public fakegame() {
         System.out.println("Loading");
+        data = new fakegameData();
     }
+
     //Game Implementation, called from client
     @Override
     public void playGame() {
-
         System.out.println("insert fun here");
 
     }
 
     @Override
     public Boolean checkResults() {
-        int val = (int)(Math.random()*10);
-        if(val == 0) return false;//lose
-        if(val == 3) return true;//win
+        int val = (int) (Math.random() * 10);
+        if (val == 0) return false;//lose
+        if (val == 3) return true;//win
         else return null;//none
     }
 
-    void moveCharacter(String param) throws IllegalArgumentException{
-        for(String dir: LocalCommands.move.parameters){
-            if(dir.equalsIgnoreCase(param)) {
-                System.out.println("Character moved "+dir);
+    void moveCharacter(String param) throws IllegalArgumentException {
+        for (String dir : LocalCommands.move.parameters) {
+            if (dir.equalsIgnoreCase(param)) {
+                System.out.println("Character moved " + dir);
                 return;
             }
         }
-        throw new IllegalArgumentException("Unknown direction. Directions are "+ LocalCommands.move.parameters);
+        throw new IllegalArgumentException("Unknown direction. Directions are " + LocalCommands.move.parameters);
     }
 
     @Override
-    public void parseCommand(String command, String... params) throws IllegalArgumentException{
-        if(params.length == 0){
-            if(command.equalsIgnoreCase("help")){System.out.println(help());}
-            else{
+    public void parseCommand(String command, String... params) throws IllegalArgumentException {
+        if (params.length == 0) {
+            if (command.equalsIgnoreCase("help")) {
+                System.out.println(help());
+            } else {
                 throw new IllegalArgumentException("command not found");
             }
-        } else if(params.length == 1){
-            if(command.equalsIgnoreCase(LocalCommands.move.keyword)){
+        } else if (params.length == 1) {
+            if (command.equalsIgnoreCase(LocalCommands.move.keyword)) {
                 moveCharacter(params[0]);
-            }
-            else{
+            } else {
                 throw new IllegalArgumentException("command not found");
             }
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("No commands take this many parameters. Compare your command to the commands found by typing `help`");
         }
     }
@@ -65,17 +67,20 @@ public class fakegame implements Game {
      * <p>help() gathers all information found here</p>
      */
     enum LocalCommands {
-        move("move", "Changes your position, ex. move up", 1,1, "up","down","left", "right"),
+        move("move", "Changes your position, ex. move up", 1, 1, new String[]{"up", "down", "left", "right"}),
         close("close", "Closes the game");
         String keyword;
         String description;
         int minParam;
         int maxParam;
         String[] parameters;
+        String[] selectedParameters;
+        Optional<Method> executor;
 
         /**
          * No parameter command constructor
-         * @param keyword String that gets compared to first word user types
+         *
+         * @param keyword     String that gets compared to first word user types
          * @param description String of what this command does as far as user is concerned
          */
         LocalCommands(String keyword, String description) {
@@ -85,11 +90,12 @@ public class fakegame implements Game {
 
         /**
          * Parameterable command constructor
-         * @param keyword String that gets compared to first word user types
+         *
+         * @param keyword     String that gets compared to first word user types
          * @param description String of what this command does as far as user is concerned
-         * @param minParam int minimum allowed parameters (should really be 0 or above)
-         * @param maxParam int maximum allowed parameters (should really be 1 or above)
-         * @param parameters String vararg of known parameter options
+         * @param minParam    int minimum allowed parameters (should really be 0 or above)
+         * @param maxParam    int maximum allowed parameters (should really be 1 or above)
+         * @param parameters  String vararg of known parameter options
          */
         LocalCommands(String keyword, String description, int minParam, int maxParam, String... parameters) {
             this.keyword = keyword;

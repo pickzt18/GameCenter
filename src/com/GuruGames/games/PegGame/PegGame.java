@@ -1,6 +1,6 @@
 package com.GuruGames.games.PegGame;
 
-/*public class PegGame {
+public class PegGame {
     Boolean[][] board = {{null, null, null, false, null, null, null}, {null, null, true, null, true, null, null}, {null, true, null, true, null, true, null}, {true, null, true, null, true, null, true}};
 
      public void Board(){
@@ -31,9 +31,3 @@ package com.GuruGames.games.PegGame;
     }
 }
 
-
-***0***
-**1*2**
-*3*4*5*
-6*7*8*9
-*/

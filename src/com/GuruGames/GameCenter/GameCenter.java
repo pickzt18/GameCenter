@@ -1,8 +1,11 @@
 package com.GuruGames.GameCenter;
 
+import com.GuruGames.GameCenter.data.Player;
 import com.GuruGames.games.Game;
 import com.GuruGames.games.GameFactory;
 import com.GuruGames.games.Commands;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.Scanner;
 
 /**
@@ -15,13 +18,14 @@ public class GameCenter implements Commands {
     Game currentGame = null;
     IllegalArgumentException e;
     public Scanner in;
-    //public Player currentPlayer;
+    public Player currentPlayer;
 
     /**
      * not intended for construction, should be called with appropriate input. As of now, we only take Scanners.
      */
     GameCenter(){
         System.out.println("Welcome to the GuruGames Center, please enter a command or type help for available commands");
+        currentPlayer = new Player(getScannerInput());
     }
 
     /**
@@ -79,7 +83,7 @@ public class GameCenter implements Commands {
      * Calls GameFactory to try parsing the gameString
      * @throws IllegalArgumentException Invalid Game name, .getMessage on error will show that.
      */
-    void setCurrentGame(String gameString) throws IllegalArgumentException{
+    void setCurrentGame(String gameString) throws IllegalArgumentException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         this.currentGame = GameFactory.parseGame(gameString);
     }
 
@@ -94,6 +98,14 @@ public class GameCenter implements Commands {
             currentGame.playGame();
             try{
                 parseCommand(gameCenter.getScannerInput());
+            } catch (InvocationTargetException invocationTargetException) {
+                invocationTargetException.printStackTrace();
+            } catch (InstantiationException instantiationException) {
+                instantiationException.printStackTrace();
+            } catch (IllegalAccessException illegalAccessException) {
+                illegalAccessException.printStackTrace();
+            } catch (NoSuchMethodException noSuchMethodException) {
+                noSuchMethodException.printStackTrace();
             } catch (IllegalArgumentException e){
                 System.out.println(e.getMessage());
             }
@@ -102,6 +114,7 @@ public class GameCenter implements Commands {
         else {
             System.out.println("Games require input! Currently we only support Scanners, add a Scanner to your get instance method to enable functionality");
         }
+        currentPlayer.
         currentGame = null;
     }
 
@@ -115,7 +128,7 @@ public class GameCenter implements Commands {
      * @throws IllegalArgumentException Invalid command, parameter, or parameter count; .getMessage() should have details.
      */
     @Override
-    public void parseCommand(String command, String... params) throws IllegalArgumentException{
+    public void parseCommand(String command, String... params) throws IllegalArgumentException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         e=null;
         if(currentGame != null) {
             try {
