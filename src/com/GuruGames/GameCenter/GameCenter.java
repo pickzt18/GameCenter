@@ -17,7 +17,7 @@ public class GameCenter implements Commands {
     static GameCenter gameCenter = null;
     Game currentGame = null;
     IllegalArgumentException e;
-    static public Scanner in;
+    public static Scanner in;
     public Player currentPlayer;
 
     /**
@@ -31,7 +31,7 @@ public class GameCenter implements Commands {
     /**
      * Called by getInstance(Scanner), assigns Scanner to in
      */
-     GameCenter(Scanner in){
+    GameCenter(Scanner in){
         this();
         this.in=in;
     }
@@ -94,27 +94,32 @@ public class GameCenter implements Commands {
      */
     void startGame() {
     Boolean gameOver = null;
-        if(in!=null) do {
-            currentGame.playGame();
-            try{
-                parseCommand(gameCenter.getScannerInput());
-            } catch (InvocationTargetException invocationTargetException) {
-                invocationTargetException.printStackTrace();
-            } catch (InstantiationException instantiationException) {
-                instantiationException.printStackTrace();
-            } catch (IllegalAccessException illegalAccessException) {
-                illegalAccessException.printStackTrace();
-            } catch (NoSuchMethodException noSuchMethodException) {
-                noSuchMethodException.printStackTrace();
-            } catch (IllegalArgumentException e){
-                System.out.println(e.getMessage());
-            }
-            gameOver = currentGame.checkResults();
-        } while(gameOver==null);
+        if(in!=null) {
+            do {
+                currentGame.playGame();
+                try {
+                    parseCommand(gameCenter.getScannerInput());
+                } catch (InvocationTargetException invocationTargetException) {
+                    invocationTargetException.printStackTrace();
+                } catch (InstantiationException instantiationException) {
+                    instantiationException.printStackTrace();
+                } catch (IllegalAccessException illegalAccessException) {
+                    illegalAccessException.printStackTrace();
+                } catch (NoSuchMethodException noSuchMethodException) {
+                    noSuchMethodException.printStackTrace();
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+                gameOver = currentGame.checkResults();
+            } while (gameOver == null);
+            System.out.println("Welcome to the GuruGames Center, please enter a command or type help for available commands");
+
+        }
         else {
             System.out.println("Games require input! Currently we only support Scanners, add a Scanner to your get instance method to enable functionality");
         }
 //        currentPlayer.
+
         currentGame = null;
     }
 
