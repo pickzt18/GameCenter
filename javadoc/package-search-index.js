@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"m":"GameCenter","l":"com.GuruGames.GameCenter"},{"m":"GameCenter","l":"com.GuruGames.games"},{"m":"GameCenter","l":"com.GuruGames.games.RockPaperScissors"},{"m":"GameCenter","l":"com.GuruGames.games.sample"},{"m":"GameCenter","l":"com.GuruGames.games.Wordle"}]
