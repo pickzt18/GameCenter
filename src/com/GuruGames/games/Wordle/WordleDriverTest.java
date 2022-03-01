@@ -13,33 +13,7 @@ public class WordleDriverTest {
 
 
     public static void main(String[] args) throws IOException {
-        System.out.println(WORD);
-        Wordle game = new Wordle();
-        Scanner in = new Scanner(System.in);
-        String s;
-        String[] words;
-        char[] charGuess;
-
-        while (!gameOver && tries < 5) {
-            System.out.println("Enter your 5 letter guess.");
-            wordGuess = in.nextLine();
-            if (game.realWord(wordGuess)) {
-                if (game.checkWin(WORD, wordGuess)) {
-                    gameOver=true;
-                    game.endGame();
-                } else {
-                    game.playGame(wordGuess, wordle);
-                    System.out.println();
-                    tries++;
-                    System.out.println("You have " + (5 - tries) + " guesses remaining.");
-                }
-            }else{
-                System.out.println("CHEATER!!!");
-            }
-        }
-        if (tries >= 5) {
-            game.endGame();
-        }
-    }
-}
+        Wordle game=new Wordle();
+        game.playGame();
+}}
 
