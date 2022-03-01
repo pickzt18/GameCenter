@@ -15,8 +15,14 @@ public class Player {
     public Player(String username){
         this.username = username;
     }
-    public void writeStats(Enum gameEnum, GameData gameData){
-        stats.put(gameEnum, gameData);
+    public void saveStats(Enum gameEnum, GameData gameData){
+        if(stats.containsKey(gameEnum)) {
+            stats.get(gameEnum).add(gameData);
+        } else {
+            ArrayList<GameData> data = new ArrayList<>();
+            data.add(gameData);
+            stats.put(gameEnum, data);
+        }
     }
 
 }
