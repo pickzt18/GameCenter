@@ -22,8 +22,9 @@ public class PegGameTest {
     public void movePeg(){
         PegGame game2 = new PegGame();
         game2.displayBoard(game2.board);
-        char[][] test = game2.movePeg(6, 3, 4, 1);
         boolean test2 = game2.isValidPiece("2", "3", "4", "1");
+        game2.displayBoard(game2.board);
+        boolean test3= game2.isValidPiece("6","3","2","3");
         game2.displayBoard(game2.board);
 
 

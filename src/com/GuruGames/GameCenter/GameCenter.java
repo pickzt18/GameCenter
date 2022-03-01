@@ -25,7 +25,7 @@ public class GameCenter implements Commands {
      */
     GameCenter(){
         System.out.println("Welcome to the GuruGames Center, please enter a command or type help for available commands");
-        currentPlayer = new Player(getScannerInput());
+        //currentPlayer = new Player(getScannerInput());
     }
 
     /**

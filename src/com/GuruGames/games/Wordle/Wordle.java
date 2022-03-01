@@ -20,14 +20,13 @@ public class Wordle implements Game {
     private BufferedReader guessCheck = new BufferedReader(new FileReader("C:\\StudentWork\\IntmJ\\GameCenter\\src\\com\\GuruGames\\games\\Wordle\\guesses.txt"));
     private int checksPast = -1;
     private String wordGuess;
-    private String word;
     private final String WORD = String.valueOf(Words.values()[new Random().nextInt(Words.values().length)]);
     private char[] wordle = WORD.toLowerCase().toCharArray();
     private  int tries = 0;
 
 
     public Wordle() throws FileNotFoundException {
-        System.out.println("Wordle");
+        System.out.println("Wordle: Enter start to begin, help to see rules, or quit to return to the main menu.");
     }
 
 
@@ -44,7 +43,7 @@ public class Wordle implements Game {
             wordGuess = in.nextLine();
             try {
                 if (realWord(wordGuess)) {
-                    if (checkResults(WORD, wordGuess)) {
+                    if (checkResults()) {
                         gameOver=true;
                         endGame();
                     } else {
@@ -57,7 +56,7 @@ public class Wordle implements Game {
                     System.out.println("CHEATER!!!");
                 }
             } catch (IOException e) {
-                System.out.println(e);
+                System.out.println(e.getMessage());
             }
         }
         if (tries >= 5) {
@@ -86,7 +85,7 @@ public class Wordle implements Game {
 
                         }
 
-                    } else if (i == j) {
+                    } else {
                         if (checksPast >= 0) {
                             if (charGuess[i] == charGuess[checksPast]) {
                                 showCorrect[checksPast] = "-";
@@ -134,9 +133,9 @@ public class Wordle implements Game {
         return false;
     }
 
-
-    protected boolean checkResults(String wordGuess, String word) {
-        if (word.equalsIgnoreCase(wordGuess)) {
+    @Override
+    public Boolean checkResults() {
+        if (WORD.equalsIgnoreCase(wordGuess)) {
             winner = true;
             return true;
         }
@@ -154,18 +153,23 @@ public class Wordle implements Game {
     @Override
     public void parseCommand(String command, String... params) throws IllegalArgumentException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         if(command.equalsIgnoreCase("help")){
-
+            help();
+        }else if(command.equalsIgnoreCase("start")){
+            wordGuess=command;
+            playGame();
+        }else if(command.equalsIgnoreCase("quit")) {
+            gameOver=true;
+            playGame();
+        }else{
+                System.out.println("Please enter start/help/quit.");
+            }
         }
-    }
+
 
     @Override
     public String help() {
-        return null;
+        return ("Enter a 5 letter guess. If the wordle contains the letter it will be printed in yellow. If the letter is in the correct spot it will be printed in green.");
     }
 
 
-    @Override
-    public Boolean checkResults() {
-        return null;
-    }
 }

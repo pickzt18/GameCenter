@@ -2,10 +2,10 @@ package com.GuruGames.games.PegGame;
 
 public class PegGame {
     char[][] board =
-                     {{'*', '*', '*', '-', '*', '*', '*'},
-                    {'*', '*', '@', '*', '@', '*', '*'},
-                    {'*', '@', '*', '@', '*', '@', '*'},
-                    {'@', '*', '@', '*', '@', '*', '@'}};
+                     {{' ', ' ', ' ', '-', ' ', ' ', ' '},
+                    {' ', ' ', '@', ' ', '@', ' ', ' '},
+                    {' ', '@', ' ', '@', ' ', '@', ' '},
+                    {'@', ' ', '@', ' ', '@', ' ', '@'}};
     boolean isValid;
 //    String column;
 //    String row;
@@ -115,7 +115,7 @@ public char[][] movePeg(int columnInput, int rowInput,int columnDest,int rowDest
                 board[rowInput][columnInput] = '-';
                 board[rowDest][columnDest] = '@';
                 //figure out how to remove after jumping
-                board[Math.abs(rowInput - rowDest)][Math.abs(columnInput-columnDest)] = '-';
+                board[Math.abs(rowInput - rowDest)-1][Math.abs(columnInput-columnDest)] = '-';
             }
         System.out.println("Moving a peg to row " + rowDest + ", column " + columnDest);
         return board;
