@@ -16,7 +16,7 @@ public class Player {
         this.username = username;
     }
     public void writeStats(Enum gameEnum, GameData gameData){
-        stats.put(gameEnum, gameData);
+//        stats.put(gameEnum, gameData);
     }
 
 }

@@ -1,5 +1,6 @@
-package com.GuruGames.GameCenter.PegGame;
+package com.GuruGames.games.PegGame;
 
+import com.GuruGames.games.PegGame.PegGame;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -23,7 +24,7 @@ public class PegGameTest {
         game2.displayBoard(game2.board);
         char[][] test = game2.movePeg(6, 3, 4, 1);
         boolean test2 = game2.isValidPiece("2", "3", "4", "1");
-       game2.displayBoard(game2.board);
+        game2.displayBoard(game2.board);
 
 
     }
