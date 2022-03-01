@@ -17,7 +17,7 @@ public class GameCenter implements Commands {
     static GameCenter gameCenter = null;
     Game currentGame = null;
     IllegalArgumentException e;
-    public Scanner in;
+    static public Scanner in;
     public Player currentPlayer;
 
     /**
@@ -31,7 +31,7 @@ public class GameCenter implements Commands {
     /**
      * Called by getInstance(Scanner), assigns Scanner to in
      */
-    GameCenter(Scanner in){
+     GameCenter(Scanner in){
         this();
         this.in=in;
     }
