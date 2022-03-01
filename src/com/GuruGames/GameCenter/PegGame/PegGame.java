@@ -104,6 +104,7 @@ public class PegGame {
                     && (Math.abs(columnInput - columnDest) >= 2)) {
 
                 isValid = true;
+                movePeg(columnInput, rowInput,columnDest,rowDest);
             } else {
                 System.out.println(rowInput + " to " + rowDest + " and " + columnInput + " to " + columnDest + " is " +
                         "currently not a valid move.");
@@ -112,16 +113,14 @@ public class PegGame {
     return isValid;
     }
 
-public char[][] movePeg(String column, String row, String destinationColumn, String destinationRow) {
-    int columnInput = Integer.parseInt(column) - 1;
-    int rowInput = Integer.parseInt(row) - 1;
-    int columnDest = Integer.parseInt(destinationColumn) - 1;
-    int rowDest = Integer.parseInt(destinationRow) - 1;
+public char[][] movePeg(int columnInput, int rowInput,int columnDest,int rowDest) {
         if (isValid) {
-                board[rowInput-1][columnInput-1] = '-';
+                board[rowInput][columnInput] = '-';
                 board[rowDest][columnDest] = '@';
+                //figure out how to remove after jumping
+                board[Math.abs(rowInput - rowDest)][Math.abs(columnInput-columnDest)] = '-';
             }
-        System.out.println("Moving a peg to row " + destinationRow + ", column " + destinationColumn);
+        System.out.println("Moving a peg to row " + rowDest + ", column " + columnDest);
         return board;
     }
 
