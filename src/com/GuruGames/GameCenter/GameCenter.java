@@ -115,6 +115,7 @@ public class GameCenter implements Commands {
             System.out.println("Games require input! Currently we only support Scanners, add a Scanner to your get instance method to enable functionality");
         }
 //        currentPlayer.
+
         currentGame = null;
     }
 

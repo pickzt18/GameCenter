@@ -145,15 +145,17 @@ public class Wordle implements Game {
     protected void endGame() {
         if (winner) {
             System.out.println("You have won!!!");
+            System.out.println("Welcome to the GuruGames Center, please enter a command or type help for available commands");
         } else {
             System.out.println("LOSER!!!!!");
+            System.out.println("Welcome to the GuruGames Center, please enter a command or type help for available commands");
         }
     }
 
     @Override
     public void parseCommand(String command, String... params) throws IllegalArgumentException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         if(command.equalsIgnoreCase("help")){
-            help();
+            System.out.println(help());
         }else if(command.equalsIgnoreCase("start")){
             wordGuess=command;
             playGame();
@@ -168,7 +170,7 @@ public class Wordle implements Game {
 
     @Override
     public String help() {
-        return ("Enter a 5 letter guess. If the wordle contains the letter it will be printed in yellow. If the letter is in the correct spot it will be printed in green.");
+        return ("Enter a 5 letter guess. If the wordle contains the letter it will be printed in yellow. If the letter is in the correct spot it will be printed in green.\n Please enter start/help/quit.");
     }
 
 
