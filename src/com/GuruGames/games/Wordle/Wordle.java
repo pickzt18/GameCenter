@@ -1,49 +1,89 @@
 package com.GuruGames.games.Wordle;
 
-import java.util.Random;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
-/*
 public class Wordle {
-    final String WORD=random Enum;
-    char [] wordle=WORD.split
-    String playerChoice
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_RESET = "\u001B[0m";
+    private String[] showCorrect = {"-", "-", "-", "-", "-"};
+    private boolean gameOver = false;
+    private boolean winner = false;
+    private BufferedReader guessCheck = new BufferedReader(new FileReader("C:\\StudentWork\\IntmJ\\GameCenter\\src\\com\\GuruGames\\GameCenter\\Wordle\\guesses.txt"));
 
-    int turn=0
-    public void playGame(){
-        playerChoice=enter word
-        char [] playerWord=playerChoice.split
-        while(!gameOver&&turns<6){
-            for(int i=0; i<playerWords.length; i++){
-                for(int j=0; j<wordle.length; j++){
-                    if(pw[i]==wordle[j]){
-                        if(i==j){
-                            Letter pw[i] is in the correct place
-                         }else{
-                            Letter pw[i] is in the incorrect place
-                         }
+    public Wordle() throws FileNotFoundException {
+    }
+
+
+    protected void playGame(String wordGuess, char[] wordle) {
+        char[] charGuess = wordGuess.toLowerCase().toCharArray();
+
+
+        for (int i = 0; i < wordle.length; i++) {
+            for (int j = 0; j < charGuess.length; j++) {
+                if (showCorrect[j].equals("=") && showCorrect[j].equals("+")) {
+                    if (charGuess[i] == wordle[j]) {
+                        if (i != j) {
+                            showCorrect[i] = "+";
+                            break;
+                        } else if (i == j) {
+                            showCorrect[i] = "=";
+                            break;
+                        }
                     }
+                } else {
+                    showCorrect[i] = "-";
                 }
-             }
-            checkResults()
+            }
         }
-    }
-    public void checkResults(){
-        turn++;
-        if(WORD.equalsIgnoreCase(playerChoice){
-            winMsg();
-        else if(turn=6){
-            loseMsg()
-        }else{
-            input new word
+        for (int i = 0; i < charGuess.length; i++) {
+            if (showCorrect[i].equals("=")) {
+                System.out.print(ANSI_GREEN + charGuess[i] + ANSI_RESET);
+            } else if (showCorrect[i].equals("+")) {
+                System.out.print(ANSI_YELLOW + charGuess[i] + ANSI_RESET);
+            } else {
+                System.out.print(charGuess[i]);
+            }
+            showCorrect[i] = "-";
         }
+        System.out.println();
     }
-}
-*/
-public class Wordle{
-    public static void main(String[] args) {
-        String WORD= String.valueOf(Words.values()[new Random().nextInt(Words.values().length)]);
-        char[] wordle=WORD.toCharArray();
-        for (var a:wordle)
-            System.out.println(a);
+
+    protected boolean realWord(String wordGuess) throws IOException {
+        String s;
+        String[] words;
+        boolean realWord;
+        guessCheck = new BufferedReader(new FileReader("C:\\StudentWork\\IntmJ\\GameCenter\\src\\com\\GuruGames\\GameCenter\\Wordle\\guesses.txt"));
+        while ((s = guessCheck.readLine()) != null) {
+            words = s.split(" ");
+            for (String word : words) {
+                if (wordGuess.equalsIgnoreCase(word)) {
+                    guessCheck.close();
+                    return true;
+                }
+            }
+        }
+        guessCheck.close();
+        return false;
+    }
+
+
+    protected boolean checkWin(String wordGuess, String word) {
+        if (word.equalsIgnoreCase(wordGuess)) {
+            winner = true;
+            return true;
+        }
+        return false;
+    }
+
+    protected void endGame() {
+        if (winner) {
+            System.out.println("You have won!!!");
+        } else {
+            System.out.println("LOSER!!!!!");
+        }
     }
 }
