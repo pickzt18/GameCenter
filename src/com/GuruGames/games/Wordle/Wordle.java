@@ -153,15 +153,9 @@ public class Wordle implements Game {
     @Override
     public void parseCommand(String command, String... params) throws IllegalArgumentException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         if(command.equalsIgnoreCase("help")){
-            help();
-        }else if(command.equalsIgnoreCase("start")){
-            wordGuess=command;
-            playGame();
-        }else if(command.equalsIgnoreCase("quit")) {
-            gameOver=true;
-            playGame();
+            System.out.println(help());
         }else{
-                System.out.println("Please enter start/help/quit.");
+                throw new IllegalArgumentException("");
             }
         }
 

@@ -50,7 +50,7 @@ public class PegGame implements Game {
             displayBoard(board);
             isValid = false;
         } else //explore absolute value
-            if (board[rowDest][columnDest] == '-' && board[rowInput][columnInput] == '@') { // && (Math.abs
+            if (board[rowDest][columnDest] == '-' && board[rowInput][columnInput] == '@' ) { // && (Math.abs
                 // (columnInput - columnDest) >= 2) removed due to issues- 4 spaces in between @s in columns (ex.
                 // column 6 - column 1 = 5 spaces, && (Math.abs(rowInput - rowDest) >= 2) removed as well due to
                 // similar issues)
@@ -201,7 +201,9 @@ public class PegGame implements Game {
     @Override
     public String help() {
         return "Enter the number of the column and row that you would like to move. Then, enter the column and row " +
-                "that you would like to move your peg to.";
+                "that you would like to move your peg to. A legal move involves jumping one peg (@) over a " +
+                "neighboring peg to rest in a hole (-) on the other side which removes peg that was jumped " +
+                "over. Diagonal jumps are not allowed.";
     }
 
 }
