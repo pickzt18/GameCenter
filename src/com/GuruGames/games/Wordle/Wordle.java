@@ -164,6 +164,4 @@ public class Wordle implements Game {
     public String help() {
         return ("Enter a 5 letter guess. If the wordle contains the letter it will be printed in yellow. If the letter is in the correct spot it will be printed in green.\n Please enter start/help/quit.");
     }
-
-
 }
