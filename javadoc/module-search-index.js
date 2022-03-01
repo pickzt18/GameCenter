@@ -1,1 +1,1 @@
-moduleSearchIndex = [{"l":"GameCenter"}]
+moduleSearchIndex = [];updateSearchResults();
