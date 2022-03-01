@@ -1,4 +1,4 @@
-package com.GuruGames.GameCenter.Wordle;
+package com.GuruGames.games.Wordle;
 
 import java.io.IOException;
 import java.util.Random;
