@@ -16,7 +16,8 @@ import java.util.Scanner;
 public class GameCenter implements Commands {
     static GameCenter gameCenter = null;
     Game currentGame = null;
-    public Scanner in;
+    IllegalArgumentException e;
+    public static Scanner in;
     public Player currentPlayer;
 
     /**
@@ -24,7 +25,7 @@ public class GameCenter implements Commands {
      */
     GameCenter(){
         System.out.println("Welcome to the GuruGames Center, please enter a command or type help for available commands");
-        currentPlayer = new Player(getScannerInput());
+        //currentPlayer = new Player(getScannerInput());
     }
 
     /**
@@ -40,7 +41,6 @@ public class GameCenter implements Commands {
      * Makes a GameCenter if one does not exist, then returns only instance of GameCenter.
      * @return Singleton instance of GameCenter without an input source.
      */
-    @Deprecated
     public static GameCenter getInstance(){ //testing
         if(gameCenter==null){
             gameCenter = new GameCenter();
@@ -94,26 +94,32 @@ public class GameCenter implements Commands {
      */
     void startGame() {
     Boolean gameOver = null;
-        if(in!=null) do {
-            currentGame.playGame();
-            try{
-                parseCommand(gameCenter.getScannerInput());
-            } catch (InvocationTargetException invocationTargetException) {
-                invocationTargetException.printStackTrace();
-            } catch (InstantiationException instantiationException) {
-                instantiationException.printStackTrace();
-            } catch (IllegalAccessException illegalAccessException) {
-                illegalAccessException.printStackTrace();
-            } catch (NoSuchMethodException noSuchMethodException) {
-                noSuchMethodException.printStackTrace();
-            } catch (IllegalArgumentException e){
-                System.out.println(e.getMessage());
-            }
-            gameOver = currentGame.checkResults();
-        } while(gameOver==null);
+        if(in!=null) {
+            do {
+                currentGame.playGame();
+                try {
+                    parseCommand(gameCenter.getScannerInput());
+                } catch (InvocationTargetException invocationTargetException) {
+                    invocationTargetException.printStackTrace();
+                } catch (InstantiationException instantiationException) {
+                    instantiationException.printStackTrace();
+                } catch (IllegalAccessException illegalAccessException) {
+                    illegalAccessException.printStackTrace();
+                } catch (NoSuchMethodException noSuchMethodException) {
+                    noSuchMethodException.printStackTrace();
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+                gameOver = currentGame.checkResults();
+            } while (gameOver == null);
+            System.out.println("Welcome to the GuruGames Center, please enter a command or type help for available commands");
+
+        }
         else {
             System.out.println("Games require input! Currently we only support Scanners, add a Scanner to your get instance method to enable functionality");
         }
+//        currentPlayer.
+
         currentGame = null;
     }
 
@@ -128,13 +134,13 @@ public class GameCenter implements Commands {
      */
     @Override
     public void parseCommand(String command, String... params) throws IllegalArgumentException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-        IllegalArgumentException commandError=null;
+        e=null;
         if(currentGame != null) {
             try {
                 currentGame.parseCommand(command, params); //if playing a game, try to use that command list
                 return;
             } catch (IllegalArgumentException e){
-                commandError=e;
+                this.e=e;
             }
         }
         if (params.length == 0) { //all 0 arg commands
@@ -143,7 +149,7 @@ public class GameCenter implements Commands {
                 startGame();
             } else if (command.equalsIgnoreCase(LocalCommands.quitProgram.keyword)) System.exit(0);
             else { //command not found
-                if(commandError!=null) throw commandError;
+                if(e!=null) throw e;
                 throw new IllegalArgumentException("The command specified doesn't exist or takes parameters. You can type 'help' for a list of commands.");
             }
         } else if (params.length == 1) { //all 1 arg commands
@@ -151,12 +157,12 @@ public class GameCenter implements Commands {
                 setCurrentGame(params[0]);
             }
             else { //command not found
-                if(commandError!=null) throw commandError;
+                if(e!=null) throw e;
                 throw new IllegalArgumentException("The command specified doesn't exist or takes a different amount of parameters. You can type 'help' for a list of commands.");
             }
         }
         else { //too many parameters
-            if(commandError!=null) throw commandError;
+            if(e!=null) throw e;
             throw new IllegalArgumentException("No commands take this many parameters. Compare your command to the commands found by typing `help`");
         }
     }
