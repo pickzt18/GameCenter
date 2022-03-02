@@ -25,7 +25,8 @@ public class Wordle implements Game {
     private String wordGuess;
     private char[] wordle = WORD.toLowerCase().toCharArray();
     private int tries = 0;
-    private boolean charGood=true;
+    private boolean charGood = true;
+    private int cheatCount=0;
 
 
     public Wordle() throws FileNotFoundException {
@@ -34,7 +35,6 @@ public class Wordle implements Game {
 
 
     public void playGame() {
-        System.out.println(WORD);
 
         Scanner in = GameCenter.in;
         //Scanner in = new Scanner(System.in);
@@ -42,7 +42,7 @@ public class Wordle implements Game {
         while (!gameOver && tries < 6) {
             showCorrect = new char[]{'-', '-', '-', '-', '-'};
             checksPast = new boolean[]{false, false, false, false, false};
-            boolean charGood=false;
+            boolean charGood = false;
             System.out.println("Enter your 5 letter guess.");
             wordGuess = in.nextLine();
             try {
@@ -58,6 +58,7 @@ public class Wordle implements Game {
                     }
                 } else {
                     System.out.println("CHEATER!!!");
+                    cheatCount++;
                 }
             } catch (IOException e) {
                 System.out.println(e.getMessage());
@@ -79,12 +80,12 @@ public class Wordle implements Game {
                                 if (charGuess[i] == charGuess[k]) {
                                     if (showCorrect[k] != '=') {
                                         showCorrect[k] = '-';
-                                        charGood=true;
+                                        charGood = true;
                                     }
                                 }
                             }
                         }
-                        if(charGood){
+                        if (charGood) {
                             showCorrect[i] = '+';
                             checksPast[i] = true;
                             break;
@@ -92,27 +93,27 @@ public class Wordle implements Game {
                         break;
 
                     } else {
-                        if(i>0) {
+                        if (i > 0) {
                             for (int k = 0; k <= i; k++) {
                                 if (checksPast[k]) {
                                     if (charGuess[i] == charGuess[k]) {
                                         if (showCorrect[k] != '=') {
                                             showCorrect[k] = '-';
-                                            charGood=true;
+                                            charGood = true;
                                         }
                                     }
                                 }
                             }
-                            if(charGood){
+                            if (charGood) {
                                 showCorrect[i] = '=';
                                 checksPast[i] = true;
                                 break;
                             }
                             break;
 
-                        }else{
-                            showCorrect[i]='=';
-                            checksPast[i]=true;
+                        } else {
+                            showCorrect[i] = '=';
+                            checksPast[i] = true;
                         }
                     }
                 }
@@ -120,9 +121,9 @@ public class Wordle implements Game {
 
         }
         for (int i = 0; i < charGuess.length; i++) {
-            if (showCorrect[i]==('=')) {
+            if (showCorrect[i] == ('=')) {
                 System.out.print(ANSI_GREEN + charGuess[i] + ANSI_RESET);
-            } else if (showCorrect[i]==('+')) {
+            } else if (showCorrect[i] == ('+')) {
                 System.out.print(ANSI_YELLOW + charGuess[i] + ANSI_RESET);
             } else {
                 System.out.print(charGuess[i]);
@@ -132,6 +133,12 @@ public class Wordle implements Game {
         System.out.println();
     }
 
+    /**
+     *
+     * @param wordGuess
+     * @return
+     * @throws IOException
+     */
     protected boolean realWord(String wordGuess) throws IOException {
         String s;
         String[] words;
@@ -160,7 +167,7 @@ public class Wordle implements Game {
 
     protected void endGame() {
         if (winner) {
-            System.out.println("You have won!!!");
+            System.out.println("You have won!!!"+" But you cheated "+cheatCount+" times!");
             System.out.println("Press Enter to go to main menu.");
         } else {
             System.out.println("LOSER!!!!!");
