@@ -1,5 +1,6 @@
 package com.GuruGames.games.Wordle;
 
+import com.GuruGames.GameCenter.GameCenter;
 import com.GuruGames.games.Game;
 
 import java.io.BufferedReader;
@@ -24,6 +25,7 @@ public class Wordle implements Game {
     private String wordGuess;
     private char[] wordle = WORD.toLowerCase().toCharArray();
     private int tries = 0;
+    private boolean charGood=true;
 
 
     public Wordle() throws FileNotFoundException {
@@ -34,10 +36,13 @@ public class Wordle implements Game {
     public void playGame() {
         System.out.println(WORD);
 
-        //Scanner in = GameCenter.in;
-        Scanner in = new Scanner(System.in);
+        Scanner in = GameCenter.in;
+        //Scanner in = new Scanner(System.in);
 
         while (!gameOver && tries < 6) {
+            showCorrect = new char[]{'-', '-', '-', '-', '-'};
+            checksPast = new boolean[]{false, false, false, false, false};
+            boolean charGood=false;
             System.out.println("Enter your 5 letter guess.");
             wordGuess = in.nextLine();
             try {
@@ -74,12 +79,15 @@ public class Wordle implements Game {
                                 if (charGuess[i] == charGuess[k]) {
                                     if (showCorrect[k] != '=') {
                                         showCorrect[k] = '-';
+                                        charGood=true;
                                     }
                                 }
-                            } else {
-                                showCorrect[i] = '+';
-                                checksPast[i] = true;
                             }
+                        }
+                        if(charGood){
+                            showCorrect[i] = '+';
+                            checksPast[i] = true;
+                            break;
                         }
                         break;
 
@@ -90,12 +98,15 @@ public class Wordle implements Game {
                                     if (charGuess[i] == charGuess[k]) {
                                         if (showCorrect[k] != '=') {
                                             showCorrect[k] = '-';
+                                            charGood=true;
                                         }
                                     }
-                                } else {
-                                    showCorrect[i] = '=';
-                                    checksPast[i] = true;
                                 }
+                            }
+                            if(charGood){
+                                showCorrect[i] = '=';
+                                checksPast[i] = true;
+                                break;
                             }
                             break;
 
