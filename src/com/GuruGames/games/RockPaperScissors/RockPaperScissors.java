@@ -1,83 +1,119 @@
 package com.GuruGames.games.RockPaperScissors;
 
+import com.GuruGames.GameCenter.GameCenter;
+import com.GuruGames.games.Game;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 import java.util.Scanner;
 
-public class RockPaperScissors {
-    public static void main(String[] args) {
+public class RockPaperScissors implements Game{
 
-        Scanner scanner = new Scanner(System.in);
-        
+    final String[] rps = {"rock", "paper", "scissors"};
+
+    String playerMove;
+    String computerMove;
+
         int wins = 0;
         int losses = 0;
         int tie = 0;
 
-        while (true) {
-            String[] rps = {"r", "p", "s"};
-            String computerMove = rps[new Random().nextInt(rps.length)];
+        public RockPaperScissors(){
+            System.out.println("Welcome to Rock Paper Scissors");
+            System.out.println("Press Start to contiune");
+        }
+        public void playGame() {
 
-            String playerMove;
+            computerMove = rps[new Random().nextInt(rps.length)];
+            playerMove = null;
+            System.out.println("Please enter your move");
 
-            while(true) {
-                System.out.println("Please enter your move (r, p, or s)");
-                playerMove = scanner.nextLine();
-                if (playerMove.equals("r") || playerMove.equals("p") || playerMove.equals("s")) {
-                    break;
-                }
-                System.out.println(playerMove + " is not a valid move.");
-            }
+        }
 
-            System.out.println("Computer played: " + computerMove);
+    public void isValidHand(String param) throws IllegalArgumentException {
+        for(String hand:rps)
 
-            if (playerMove.equals(computerMove)) {
-                System.out.println("The game was a tie!");
-                tie++;
-            }
-            
-            else if (playerMove.equals("r")) {
-                if (computerMove.equals("p")) {
-                    System.out.println("You lose!");
-                    losses++;
-
-                } else if (computerMove.equals("s")) {
-                    System.out.println("You win!");
-                    wins++;
-                }
-            }
-
-            else if (playerMove.equals("p")) {
-                if (computerMove.equals("r")) {
-                    System.out.println("You win!");
-                    wins++;
-
-                } else if (computerMove.equals("s")) {
-                    System.out.println("You lose!");
-                    losses++;
-                }
-            }
-
-            else if (playerMove.equals("s")) {
-                if (computerMove.equals("p")) {
-                    System.out.println("You win!");
-                    wins++;
-
-                } else if (computerMove.equals("r")) {
-                    System.out.println("You lose!");
-                    losses++;
-                }
-            }
-            
-            System.out.println("you have won " + wins + " games!");
-            System.out.println("you have won " + losses + " games!");
-            System.out.println("Game ended in a tie " + tie +  "");
-
-            System.out.println("Play again? (y/n)");
-            String playAgain = scanner.nextLine();
-
-            if (!playAgain.equals("y")) {
-                break;
+        {
+            if (param.equalsIgnoreCase(hand)) {
+                playerMove = param;
             }
         }
-        scanner.close();
+               if (playerMove== null)throw new IllegalArgumentException("Not a hand");
     }
+
+
+
+    @Override
+    public Boolean checkResults() {
+        System.out.println("Computer played " + computerMove);
+        if (playerMove.equalsIgnoreCase(computerMove)) {
+            return null;
+        } else if (playerMove.equals("rock")) {
+            if (computerMove.equals("paper")) {
+                System.out.println("You lose!");
+                losses++;
+                return false;
+
+            } else if (computerMove.equals("scissors")) {
+                System.out.println("You win!");
+                wins++;
+                return true;
+            }
+        } else if (playerMove.equals("paper")) {
+            if (computerMove.equals("rock")) {
+                System.out.println("You win!");
+                wins++;
+                return true;
+
+
+            } else if (computerMove.equals("scissors")) {
+                System.out.println("You lose!");
+                losses++;
+                return false;
+            }
+        } else if (playerMove.equals("scissors")) {
+            if (computerMove.equals("paper")) {
+                System.out.println("You win!");
+                wins++;
+                return true;
+
+            } else if (computerMove.equals("rock")) {
+                System.out.println("You lose!");
+                losses++;
+                return false;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void parseCommand(String command, String... params) throws IllegalArgumentException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+        if (command.equalsIgnoreCase(LocalCommand.shoot.keyword)) {
+            isValidHand(params[0]);
+
+        }
+        else{
+            throw new IllegalArgumentException("Command not found");
+        }
+    }
+
+    @Override
+    public String help() {
+        return "r(Rock), p(Paper), or s(Scissors)";
+    }
+    enum LocalCommand{
+    shoot("shoot","shoot rock, paper or scissor",1,1,"Rock","Paper","Scissors");
+    String keyword;
+    String description;
+    int minParam;
+    int maxParam;
+    String[] params;
+    LocalCommand(String keyword, String description, int minParam, int maxParam, String... params){
+        this.keyword =  keyword;
+        this.description = description;
+        this.minParam = minParam;
+        this.maxParam = maxParam;
+        this.params = params;
+    }
+ }
 }
