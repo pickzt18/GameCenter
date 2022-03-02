@@ -211,4 +211,15 @@ public class PegGame implements Game {
         return "Write move followed by the row of the peg you would like to move, the column of the peg you would like to move, the number of the row you would like to move your peg to and the column that you would like to move your peg to (ex. move 3 2 4 1). A legal move involves jumping one peg (@) over a neighboring peg to rest in a hole (-) on the other side which removes peg that was jumped over. Diagonal jumps are not allowed.";
     }
 
+    @Override
+    public addStats(PegGameData data) {
+        PegGameData data
+    }
+    public abstract class GameData {
+        public int wins;
+        public int losses;
+        //combine with another GameData of the same type Cast data to the implementation
+        public abstract void addStats(GameData data);
+    }
+
 }
