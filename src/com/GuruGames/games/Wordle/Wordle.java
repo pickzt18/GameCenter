@@ -1,6 +1,5 @@
 package com.GuruGames.games.Wordle;
 
-import com.GuruGames.GameCenter.GameCenter;
 import com.GuruGames.games.Game;
 
 import java.io.BufferedReader;
@@ -17,11 +16,11 @@ public class Wordle implements Game {
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_RESET = "\u001B[0m";
     private final String WORD = String.valueOf(Words.values()[new Random().nextInt(Words.values().length)]);
-    private String[] showCorrect = {"-", "-", "-", "-", "-"};
+    boolean[] checksPast = {false, false, false, false, false};
+    private char[] showCorrect = {'-', '-', '-', '-', '-'};
     private boolean gameOver = false;
     private boolean winner = false;
     private BufferedReader guessCheck = new BufferedReader(new FileReader("C:\\StudentWork\\IntmJ\\GameCenter\\src\\com\\GuruGames\\games\\Wordle\\guesses.txt"));
-    private int checksPast = -1;
     private String wordGuess;
     private char[] wordle = WORD.toLowerCase().toCharArray();
     private int tries = 0;
@@ -35,8 +34,8 @@ public class Wordle implements Game {
     public void playGame() {
         System.out.println(WORD);
 
-        Scanner in = GameCenter.in;
-        //Scanner in= new Scanner(System.in);
+        //Scanner in = GameCenter.in;
+        Scanner in = new Scanner(System.in);
 
         while (!gameOver && tries < 6) {
             System.out.println("Enter your 5 letter guess.");
@@ -70,46 +69,54 @@ public class Wordle implements Game {
             for (int j = 0; j < charGuess.length; j++) {
                 if (wordle[j] == (charGuess[i])) {
                     if (i != j) {
-                        if (checksPast >= 0) {
-                            if ((charGuess[i] == charGuess[checksPast])) {
-                                showCorrect[checksPast] = "-";
-                                checksPast = (-1);
-                                break;
+                        for (int k = 0; k <= i; k++) {
+                            if (checksPast[k]) {
+                                if (charGuess[i] == charGuess[k]) {
+                                    if (showCorrect[k] != '=') {
+                                        showCorrect[k] = '-';
+                                    }
+                                }
+                            } else {
+                                showCorrect[i] = '+';
+                                checksPast[i] = true;
                             }
-                            showCorrect[i] = "+";
                         }
-                        showCorrect[i] = "+";
-                        if (checksPast < 0) {
-                            checksPast = i;
-
-                        }
+                        break;
 
                     } else {
-                        if (checksPast >= 0) {
-                            if (charGuess[i] == charGuess[checksPast]) {
-                                showCorrect[checksPast] = "-";
-                                checksPast = (-1);
+                        if(i>0) {
+                            for (int k = 0; k <= i; k++) {
+                                if (checksPast[k]) {
+                                    if (charGuess[i] == charGuess[k]) {
+                                        if (showCorrect[k] != '=') {
+                                            showCorrect[k] = '-';
+                                        }
+                                    }
+                                } else {
+                                    showCorrect[i] = '=';
+                                    checksPast[i] = true;
+                                }
                             }
-                            showCorrect[i] = "=";
-                        }
-                        showCorrect[i] = "=";
+                            break;
 
+                        }else{
+                            showCorrect[i]='=';
+                            checksPast[i]=true;
+                        }
                     }
-                    if (checksPast < 0)
-                        break;
                 }
             }
 
         }
         for (int i = 0; i < charGuess.length; i++) {
-            if (showCorrect[i].equals("=")) {
+            if (showCorrect[i]==('=')) {
                 System.out.print(ANSI_GREEN + charGuess[i] + ANSI_RESET);
-            } else if (showCorrect[i].equals("+")) {
+            } else if (showCorrect[i]==('+')) {
                 System.out.print(ANSI_YELLOW + charGuess[i] + ANSI_RESET);
             } else {
                 System.out.print(charGuess[i]);
             }
-            showCorrect[i] = "-";
+            showCorrect[i] = '-';
         }
         System.out.println();
     }
@@ -154,7 +161,7 @@ public class Wordle implements Game {
     public void parseCommand(String command, String... params) throws IllegalArgumentException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         if (command.equalsIgnoreCase("help")) {
             System.out.println(help());
-        }else{
+        } else {
             throw new IllegalArgumentException("");
         }
     }
