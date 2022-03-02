@@ -1,20 +1,24 @@
 package com.GuruGames.games.PegGame;
 
-import com.GuruGames.GameCenter.GameCenter;
 import com.GuruGames.games.Game;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Scanner;
+
 
 public class PegGame implements Game {
     char[][] board =
-            {{' ', ' ', ' ', '-', ' ', ' ', ' '},
-                    {' ', ' ', '@', ' ', '@', ' ', ' '},
-                    {' ', '@', ' ', '@', ' ', '@', ' '},
-                    {'@', ' ', '@', ' ', '@', ' ', '@'}};
+            {{' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' '},
+                    {' ', ' ', ' ', '@', ' ', '@', ' ', ' ', ' '},
+                    {' ', ' ', '@', ' ', '@', ' ', '@', ' ', ' '},
+                    {' ', '@', ' ', '@', ' ', '@', ' ', '@', ' '},
+                    {'@', ' ', '@', ' ', '@', ' ', '@', ' ', '@'}};
     boolean isValid;
-    boolean checkResults;
-    boolean validMoves = true;
+    Boolean checkResults;
+    int count = 0;
+
+    public PegGame() {
+        System.out.println("Enter start to begin game or enter help for instructions");
+    }
 
     public static void displayBoard(char[][] board) { //to print the rows and columns
 
@@ -24,7 +28,6 @@ public class PegGame implements Game {
             System.out.print(i + 1);
         }
         System.out.println();
-
         for (int j = 0; j < board.length; j++) {
             System.out.print((j + 1) + " "); //   //for loop for row iteration.
             for (int i = 0; i < board[0].length; i++) {
@@ -34,90 +37,103 @@ public class PegGame implements Game {
         }
     }
 
-    public boolean isValidPiece(String column, String row, String destinationColumn, String destinationRow) {
-        //trying to move to vs destination that they're actually moving to
-        int columnInput = Integer.parseInt(column) - 1;
-        int rowInput = Integer.parseInt(row) - 1;
-        int columnDest = Integer.parseInt(destinationColumn) - 1;
-        int rowDest = Integer.parseInt(destinationRow) - 1;
+    public boolean isValidPiece(int rowInput, int columnInput, int rowDest, int columnDest) throws IllegalArgumentException {
 
-        if (columnInput < 0 || columnInput > 7) { //!Character.isDigit(columnInput)
-            System.out.println("Please select a number between 1-7.");
-            displayBoard(board);
+        if (columnInput < 0 || columnInput > 9 || rowInput < 0 || rowInput > 5) {
             isValid = false;
-        } else if (rowInput < 0 || rowInput > 7) { //row.matches("\\d") explore regex
-            System.out.println("Please select a number between 1-4.");
-            displayBoard(board);
-            isValid = false;
-        } else //explore absolute value
-            if (board[rowDest][columnDest] == '-' && board[rowInput][columnInput] == '@' ) { // && (Math.abs
-                // (columnInput - columnDest) >= 2) removed due to issues- 4 spaces in between @s in columns (ex.
-                // column 6 - column 1 = 5 spaces, && (Math.abs(rowInput - rowDest) >= 2) removed as well due to
-                // similar issues)
-                isValid = true;
-                movePeg(columnInput, rowInput, columnDest, rowDest);
+            throw new IllegalArgumentException("Please select a valid number (Column 1-9, Row 1-5).");
+        } else {
+            int[] middle = getMiddlePiece(rowInput, columnInput, rowDest, columnDest);
+            int middleRow = middle[0];
+            int middleColumn = middle[1];
+            if (board[rowDest][columnDest] == '-' && board[rowInput][columnInput] == '@' && board[middleRow][middleColumn] == '@') {
+                if (rowInput == rowDest) {
+                    if (Math.abs(columnInput - columnDest) == 4) {
+                        isValid = true;
+                    } else {
+                        isValid = false;
+                    }
+                } else if (Math.abs(rowInput - rowDest) == 2) {
+                    if (Math.abs(columnInput - columnDest) == 2) {
+                        isValid = true;
+                    } else {
+                        isValid = false;
+                    }
+                }
             } else {
-                System.out.println("Row " + (rowInput + 1) + " column " + (columnInput + 1) + " to row " + (rowDest + 1) +
-                        " column " + (columnDest + 1) + " is currently not a valid move.");
-
                 isValid = false;
-                System.out.println("rowDest: " + rowDest);
-                System.out.println("columnDest: " + columnDest);
-                System.out.println("rowInput: " + rowInput);
-                System.out.println("columnInput: " + columnInput);
-                displayBoard(board);
-
+                throw new IllegalArgumentException("You have selected an invalid move.");
             }
+        }
         return isValid;
     }
 
-    public char[][] movePeg(int columnInput, int rowInput, int columnDest, int rowDest) {
-        if (isValid) {
-            board[rowInput][columnInput] = '-';
-            board[rowDest][columnDest] = '@';
-//            System.out.println("rowDest: " + rowDest);
-//            System.out.println("columnDest: " + columnDest);
-//            System.out.println("rowInput: " + rowInput);
-//            System.out.println("columnInput: " + columnInput);
+    public char[][] movePeg(String row, String column, String destinationRow, String destinationColumn) {
+        int columnInput = 0;
+        int rowInput = 0;
+        int columnDest = 0;
+        int rowDest = 0;
 
-            int middleRow;      //to remove peg in the middle of the skipped one
-            int middleColumn;
-            boolean isSameRow = false;
-            if (rowInput > rowDest) {
-                middleRow = rowInput - 1;
-            } else if (rowInput == rowDest) {
-                middleRow = rowInput;
-                isSameRow = true;
-            } else {
-                middleRow = rowDest - 1;
-            }
-            if (isSameRow) {
-                if (columnInput > columnDest) {
-                    middleColumn = columnInput - 2;
-                } else if (columnInput == columnDest) {
-                    middleColumn = columnDest;
-                } else {
-                    middleColumn = columnDest - 2;
-                }
-            } else {
-                if (columnInput > columnDest) {
-                    middleColumn = columnInput - 1;
-                } else if (columnInput == columnDest) {
-                    middleColumn = columnDest;
-                } else {
-                    middleColumn = columnDest - 1;
-                }
-            }
-            board[middleRow][middleColumn] = '-';
-
-//                board[Math.abs(rowInput - (rowDest +1))][Math.abs(columnInput-(columnDest))] = 'X'; //issues with
-            // this
-            System.out.println("Moving a peg from row " + (rowInput + 1) + ", column " + (columnInput + 1) + " to row " + (rowDest + 1) + ", column " + (columnDest + 1));
-            displayBoard(board);
-
+        try {
+            columnInput = Integer.parseInt(column) - 1;
+            rowInput = Integer.parseInt(row) - 1;
+            columnDest = Integer.parseInt(destinationColumn) - 1;
+            rowDest = Integer.parseInt(destinationRow) - 1;
+        } catch (NumberFormatException e) {
+            System.out.println("Please enter a valid number.");
         }
 
+        if (isValidPiece(rowInput, columnInput, rowDest, columnDest)) {
+            board[rowInput][columnInput] = '-';
+            board[rowDest][columnDest] = '@';
+
+            int[] middle = getMiddlePiece(rowInput, columnInput, rowDest, columnDest);
+            int middleRow = middle[0];
+            int middleColumn = middle[1];
+            board[middleRow][middleColumn] = '-';
+
+        }
+        displayBoard(board);
+        System.out.println("Moved a peg from row " + (rowInput + 1) + ", column " + (columnInput + 1) + " to row " + (rowDest + 1) + ", column " + (columnDest + 1));
+        System.out.println("Please make your next move.");
+
         return board;
+    }
+
+    public int[] getMiddlePiece(int rowInput, int columnInput, int rowDest, int columnDest) {
+        int[] middle = {0, 0};
+        int middleRow;      //to remove peg in the middle of the skipped one
+        int middleColumn;
+        boolean isSameRow = false;
+        if (rowInput > rowDest) {
+            middleRow = rowInput - 1;
+        } else if (rowInput == rowDest) {
+            middleRow = rowInput;
+            isSameRow = true;
+        } else {
+            middleRow = rowDest - 1;
+        }
+        if (isSameRow) {
+            if (columnInput > columnDest) {
+                middleColumn = columnInput - 2;
+            } else if (columnInput == columnDest) {
+                middleColumn = columnDest;
+            } else {
+                middleColumn = columnDest - 2;
+            }
+        } else {
+            if (columnInput > columnDest) {
+                middleColumn = columnInput - 1;
+            } else if (columnInput == columnDest) {
+                middleColumn = columnDest;
+            } else {
+                middleColumn = columnDest - 1;
+            }
+        }
+        middle[0] = middleRow;
+        middle[1] = middleColumn;
+
+        return middle;
     }
 
     public int countPegsRemaining(char[][] board) {
@@ -132,78 +148,67 @@ public class PegGame implements Game {
         return count;
     }
 
-    public int countMovesAvailable(char[][] board) {
-        int total = 0;
-        for (int i = 1; i <= board.length; i++) {
+    public boolean countMovesAvailable(char[][] board) {
+        for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
-                if (isValid) {
-                    total++;
+                for (int q = 0; q < board.length; q++) {
+                    for (int x = 0; x < board[0].length; x++) {
+                        try {
+                            if (isValidPiece(i, j, q, x)) {
+                                return true;
+                            }
+                        } catch (IllegalArgumentException e) {
+                        }
+                    }
                 }
             }
         }
-        return total;
+        return false;
     }
-
-//        protected void endgame() {
-//            if (countMovesAvailable(board) == 0) {
-//                if (countPegsRemaining(board) == 1) {
-//                    System.out.println("Congrats you won!");
-//                    validMoves = false;
-//                    checkResults = true;
-//                } else {
-//                    System.out.println("You lose");
-//                    validMoves = false;
-//                    checkResults = false;
-//                }
-//            }
-//        }
 
     public void playGame() {
+        if (count == 0) {
+            System.out.println("Write 'move' followed by the row of the peg you would like to move, the column of the peg you would like to move, the number of the row you would like to move your peg to and the column that you would like to move your peg to (ex. move 3 2 4 1)");
+        }
         displayBoard(board);
-        Scanner in = GameCenter.in;
+        count++;
 
-        while (validMoves) {
-            System.out.println("Enter starting column ");
-            String columnInput = in.nextLine();
-            System.out.println("Enter starting row ");
-            String RowInput = in.nextLine();
-            System.out.println("Enter destination column ");
-            String columnDest = in.nextLine();
-            System.out.println("Enter destination row ");
-            String rowDest = in.nextLine();
-            isValidPiece(columnInput, RowInput, columnDest, rowDest);
-
-            if (countMovesAvailable(board) == 0) {
-                if (countPegsRemaining(board) == 1) {
-                    System.out.println("Congrats you won!");
-                    validMoves = false;
-                    checkResults = true;
-                } else {
-                    System.out.println("You lose");
-                    validMoves = false;
-                    checkResults = false;
-                }
-            } else playGame();
+        if (!countMovesAvailable(board)) {
+            if (countPegsRemaining(board) == 1) {
+                System.out.println("Congrats you won!");
+                checkResults = true;
+                System.out.println("Press enter to return to main menu");
+            } else {
+                System.out.println("You lose");
+                checkResults = false;
+                System.out.println("Press enter to return to main menu");
+            }
+        } else {
+            checkResults = null;
         }
     }
+
     @Override
     public Boolean checkResults() {
         return checkResults;
     }
 
     @Override
-    public void parseCommand(String command, String... params) throws IllegalArgumentException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-        if (command.equalsIgnoreCase("start")) {
-            playGame();
+    public void parseCommand(String command, String... params) throws
+            IllegalArgumentException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+
+        if (command.equalsIgnoreCase("help")) {
+            System.out.println(help());
+        } else if (command.equalsIgnoreCase("move") && params.length == 4) {
+            movePeg(params[0], params[1], params[2], params[3]);
+        } else {
+            throw new IllegalArgumentException("");
         }
     }
 
     @Override
     public String help() {
-        return "Enter the number of the column and row that you would like to move. Then, enter the column and row " +
-                "that you would like to move your peg to. A legal move involves jumping one peg (@) over a " +
-                "neighboring peg to rest in a hole (-) on the other side which removes peg that was jumped " +
-                "over. Diagonal jumps are not allowed.";
+        return "Write move followed by the row of the peg you would like to move, the column of the peg you would like to move, the number of the row you would like to move your peg to and the column that you would like to move your peg to (ex. move 3 2 4 1). A legal move involves jumping one peg (@) over a neighboring peg to rest in a hole (-) on the other side which removes peg that was jumped over. Diagonal jumps are not allowed.";
     }
 
 }
