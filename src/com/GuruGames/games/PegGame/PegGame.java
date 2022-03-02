@@ -95,7 +95,7 @@ public class PegGame implements Game {
         }
         displayBoard(board);
         System.out.println("Moved a peg from row " + (rowInput + 1) + ", column " + (columnInput + 1) + " to row " + (rowDest + 1) + ", column " + (columnDest + 1));
-        System.out.println("Please make your next move.");
+
 
         return board;
     }
@@ -172,24 +172,22 @@ public class PegGame implements Game {
         }
         displayBoard(board);
         count++;
-
-        if (!countMovesAvailable(board)) {
-            if (countPegsRemaining(board) == 1) {
-                System.out.println("Congrats you won!");
-                checkResults = true;
-                System.out.println("Press enter to return to main menu");
-            } else {
-                System.out.println("You lose");
-                checkResults = false;
-                System.out.println("Press enter to return to main menu");
-            }
-        } else {
-            checkResults = null;
-        }
     }
 
     @Override
     public Boolean checkResults() {
+        if (!countMovesAvailable(board)) {
+            if (countPegsRemaining(board) == 1) {
+                System.out.println("Congrats you won!");
+                checkResults = true;
+            } else {
+                System.out.println("You lose");
+                checkResults = false;
+            }
+        } else {
+            checkResults = null;
+            System.out.println("Please make your next move.");
+        }
         return checkResults;
     }
 
@@ -209,17 +207,6 @@ public class PegGame implements Game {
     @Override
     public String help() {
         return "Write move followed by the row of the peg you would like to move, the column of the peg you would like to move, the number of the row you would like to move your peg to and the column that you would like to move your peg to (ex. move 3 2 4 1). A legal move involves jumping one peg (@) over a neighboring peg to rest in a hole (-) on the other side which removes peg that was jumped over. Diagonal jumps are not allowed.";
-    }
-
-    @Override
-    public addStats(PegGameData data) {
-        PegGameData data
-    }
-    public abstract class GameData {
-        public int wins;
-        public int losses;
-        //combine with another GameData of the same type Cast data to the implementation
-        public abstract void addStats(GameData data);
     }
 
 }
