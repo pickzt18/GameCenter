@@ -174,7 +174,7 @@ public class Wordle implements Game {
     protected boolean realWord(String wordGuess) throws IOException {
         String s;
         String[] words;
-        BufferedReader guessCheck = new BufferedReader(new FileReader("C:\\StudentWork\\IntmJ\\GameCenter\\src\\com\\GuruGames\\games\\Wordle\\guesses.txt"));
+        BufferedReader guessCheck = new BufferedReader(new FileReader("src/com/GuruGames/games/Wordle/guesses.txt"));
         while ((s = guessCheck.readLine()) != null) {
             words = s.split(" ");
             for (String word : words) {
