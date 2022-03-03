@@ -40,6 +40,8 @@ public class Player implements Serializable {
     }
     //adds GameData object to map
     public void saveStats(Class<? extends Game> gameName, GameData gameData){
+        totalWins += gameData.wins;
+        totalLosses += gameData.losses;
         if(stats.containsKey(gameName)) {
             stats.get(gameName).addStats(gameData);
         } else {
@@ -78,7 +80,7 @@ public class Player implements Serializable {
                 "username='" + username + '\'' +
                 ", totalWins=" + totalWins +
                 ", totalLosses=" + totalLosses +
-                ", stats=" + stats.toString() +
+                ", stats=" + stats.values() +
                 '}';
     }
 }
