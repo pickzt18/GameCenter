@@ -67,8 +67,10 @@ public class GameCenter implements Commands {
             } catch (IllegalArgumentException e){
                 System.out.println(e.getMessage());
             }
-            System.out.println("Enter 'game' and select what you would like to play (wordle, pegsolitaire or rps) or type help for available commands:");
-            return gameCenter;
+            System.out.println("Enter 'game' and select what you would like to play (wordle, pegsolitaire or rps), type 'help' for available commands, or type 'stats' to see your statistics, or enter 'close' to end Game Center:");
+            if(gameCenter.currentPlayer != null) {
+                return gameCenter;
+            }
         }
     }
 
@@ -125,7 +127,7 @@ public class GameCenter implements Commands {
             }
             }
             currentPlayer.saveStats(currentGame.getClass(), currentGame.getGameData());
-            System.out.println("Welcome to the GuruGames Center, please enter 'game' and select what you would like to play (wordle, pegsolitaire or rps) or type help for available commands");
+            System.out.println("Enter 'game' and select what you would like to play (wordle, pegsolitaire or rps), type 'help' for available commands, type 'stats' to see your statistics, or enter 'close' to end Game Center:");
             currentGame = null;
 
         }
