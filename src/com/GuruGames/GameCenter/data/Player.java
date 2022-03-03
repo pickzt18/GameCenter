@@ -18,27 +18,44 @@ public class Player implements Serializable {
     int totalLosses;
     //Game-specific stats
     Map<Class<? extends Game>, GameData> stats = new HashMap<>();
+    //data file objects
     File characterData;
     File visualData;
-    //private constructor creates a new Player if one of that username cannot be found in disk
+
+    /**
+     * <p>Used to create a player new to GuruGameCenter.</p>
+     * <p>Creates files to store data and text copy.</p>
+     */
     Player(String username){
         this.username = username;
         characterData = new File(username+"Save.dat");
         visualData = new File(username+"Save.txt");
     }
-    //checks disk for save files of provided username else creates new files and returns a new Player
-    public static Player logIn(String username) {
-        try{
-            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(username+"Save.dat"));
-            return (Player)objectInputStream.readObject();
-        } catch (IOException e){
-            return new Player(username);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace(); //should not reach
-            return new Player(username);
+
+    /**
+     * Asks user for valid username then tries to load that player's object, if it cannot be found it makes a new player
+     * @param username String requested from user for desired name, Only characters
+     * @return Player potentially loaded from disk
+     */
+    public static Player logIn(String username) throws IllegalArgumentException {
+        for(Character character : username.toCharArray()) {
+            if (!Character.isLetter(character)) throw new IllegalArgumentException("please enter only letters, no special characters, numbers, or spaces");
         }
+                try{
+                    ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(username+"Save.dat"));
+                    return (Player)objectInputStream.readObject();
+                } catch (IOException e){
+                    return new Player(username);
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace(); //should not reach
+                    return new Player(username);
+                }
     }
-    //adds GameData object to map
+    /**
+     * Saves game data to player, and cumulates GameData if necessary
+     * @param gameName currentGame.getClass
+     * @param gameData currentGame.getData
+     */
     public void saveStats(Class<? extends Game> gameName, GameData gameData){
         totalWins += gameData.wins;
         totalLosses += gameData.losses;
@@ -48,7 +65,10 @@ public class Player implements Serializable {
             stats.put(gameName, gameData);
         }
     }
-    //stores player info in disk
+
+    /**
+     * Stores a dat and txt file to disk
+     */
     public void storeStats(){
         try{
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(characterData));
@@ -62,11 +82,20 @@ public class Player implements Serializable {
             System.out.println(e.getMessage());
         }
     }
-    //returns stats in string form
+
+    /**
+     * Returns all Stats in string form
+     */
     public String checkStats(){
         return this.toString();
     }
-    //returns stats of a specific game in string form
+
+    /**
+     * Returns Stats of a specified game
+     * @param gameString string form of desired game to get stats of
+     * @return String containing the stats of specified game
+     * @throws IllegalArgumentException player either hasn't played the selected game or entered it in incorrectly
+     */
     public String checkStats(String gameString)  throws IllegalArgumentException{
         for(Class<? extends Game> gameClass: stats.keySet()){
             if(gameString.equalsIgnoreCase(gameClass.toString())) return stats.get(gameClass).toString();
@@ -74,13 +103,17 @@ public class Player implements Serializable {
         throw new IllegalArgumentException("Stats not found. You either haven't played the selected game or entered it in incorrectly");
     }
 
+    /**
+     * Print it pretty
+     */
+
     @Override
     public String toString() {
         return "Player{" +
                 "username='" + username + '\'' +
                 ", totalWins=" + totalWins +
                 ", totalLosses=" + totalLosses +
-                ", stats=" + stats.toString() +
+                ", stats=" + stats.values() +
                 '}';
     }
 }
