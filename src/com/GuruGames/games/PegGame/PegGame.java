@@ -20,7 +20,7 @@ public class PegGame implements Game {
     int count = 0;
 
     public PegGame() {
-        System.out.println("Enter 'start' to begin game or enter help for instructions");
+        System.out.println("Enter 'start' to begin game, 'help' for instructions, or 'quit' to return to the main menu");
     }
 
     /**
@@ -64,6 +64,14 @@ public class PegGame implements Game {
      */
 
     public boolean isValidPiece(int rowInput, int columnInput, int rowDest, int columnDest) throws IllegalArgumentException {
+        if (rowInput == 4 && columnInput == 8 && rowDest ==0 && columnDest == 4) {
+            isValid= false;
+            throw new IllegalArgumentException(ANSI_RED+"You have selected an invalid move."+ANSI_RESET);
+        }
+        if (rowInput == 4 && columnInput == 0 && rowDest == 0 && columnDest == 4) {
+            isValid= false;
+            throw new IllegalArgumentException(ANSI_RED+"You have selected an invalid move."+ANSI_RESET);
+        }
         if (columnInput < 0 || columnInput > 9 || rowInput < 0 || rowInput > 5) {
             isValid = false;
             throw new IllegalArgumentException(ANSI_RED + "Please select a valid number (Column 1-9, Row 1-5)."+ANSI_RESET);
@@ -77,12 +85,14 @@ public class PegGame implements Game {
                         isValid = true;
                     } else {
                         isValid = false;
+                        throw new IllegalArgumentException(ANSI_RED+"You have selected an invalid move."+ANSI_RESET);
                     }
-                } else if (Math.abs(rowInput - rowDest) == 2) {
+                } else if (Math.abs(rowInput - rowDest) == 2) { // come back to this, 5 1 issues
                     if (Math.abs(columnInput - columnDest) == 2) {
                         isValid = true;
                     } else {
                         isValid = false;
+                        throw new IllegalArgumentException(ANSI_RED+"You have selected an invalid move."+ANSI_RESET);
                     }
                 }
             } else {
@@ -132,8 +142,8 @@ public class PegGame implements Game {
             int middleRow = middle[0];
             int middleColumn = middle[1];
             board[middleRow][middleColumn] = '-';
+            System.out.println("Moved a peg from row " + (rowInput + 1) + ", column " + (columnInput + 1) + " to row " + (rowDest + 1) + ", column " + (columnDest + 1));
         }
-        System.out.println("Moved a peg from row " + (rowInput + 1) + ", column " + (columnInput + 1) + " to row " + (rowDest + 1) + ", column " + (columnDest + 1));
         return board;
     }
 
@@ -247,9 +257,11 @@ public class PegGame implements Game {
         if (!countMovesAvailable(board)) {
             if (countPegsRemaining(board) == 1) {
                 System.out.println("Congrats you won!");
+                data.wins++;
                 checkResults = true;
             } else {
                 System.out.println(ANSI_RED+"You lose."+ANSI_RESET);
+                data.losses++;
                 checkResults = false;
             }
         } else {
