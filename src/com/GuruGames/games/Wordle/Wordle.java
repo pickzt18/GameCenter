@@ -2,6 +2,7 @@ package com.GuruGames.games.Wordle;
 
 import com.GuruGames.GameCenter.GameCenter;
 import com.GuruGames.games.Game;
+import com.GuruGames.games.GameData;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -163,6 +164,11 @@ public class Wordle implements Game {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public GameData getGameData() {
+        return null;
     }
 
     protected void endGame() {

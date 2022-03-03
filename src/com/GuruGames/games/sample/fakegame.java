@@ -1,11 +1,12 @@
 package com.GuruGames.games.sample;
 
 import com.GuruGames.games.Game;
+import com.GuruGames.games.GameData;
+
 import java.lang.reflect.Method;
 import java.util.Optional;
 
 public class fakegame implements Game {
-    boolean gameOver = false;
     fakegameData data;
     public fakegame() {
         System.out.println("Loading");
@@ -58,7 +59,14 @@ public class fakegame implements Game {
 
     @Override
     public String help() {
-        return null;
+        StringBuilder stringBuilder = new StringBuilder();
+        for(LocalCommands command : LocalCommands.values()) stringBuilder.append(command);
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public GameData getGameData() {
+        return data;
     }
 
     /**
@@ -74,8 +82,6 @@ public class fakegame implements Game {
         int minParam;
         int maxParam;
         String[] parameters;
-        String[] selectedParameters;
-        Optional<Method> executor;
 
         /**
          * No parameter command constructor
