@@ -1,14 +1,14 @@
 package com.GuruGames.games.RockPaperScissors;
 
-import com.GuruGames.GameCenter.GameCenter;
 import com.GuruGames.games.Game;
 import com.GuruGames.games.GameData;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
-import java.util.Scanner;
 
 public class RockPaperScissors implements Game{
+
+    RockPaperScissorsData gameData = new RockPaperScissorsData();
 
     final String[] rps = {"rock", "paper", "scissors"};
 
@@ -17,11 +17,10 @@ public class RockPaperScissors implements Game{
 
         int wins = 0;
         int losses = 0;
-        int tie = 0;
 
         public RockPaperScissors(){
             System.out.println("Welcome to Rock Paper Scissors");
-            System.out.println("Press Start to contiune");
+            System.out.println("Press Start to continue");
         }
         public void playGame() {
 
@@ -41,8 +40,6 @@ public class RockPaperScissors implements Game{
         }
                if (playerMove== null)throw new IllegalArgumentException("Not a hand");
     }
-
-
 
     @Override
     public Boolean checkResults() {
@@ -89,7 +86,7 @@ public class RockPaperScissors implements Game{
 
     @Override
     public GameData getGameData() {
-        return null;
+        return gameData;
     }
 
     @Override
@@ -114,6 +111,7 @@ public class RockPaperScissors implements Game{
     int minParam;
     int maxParam;
     String[] params;
+
     LocalCommand(String keyword, String description, int minParam, int maxParam, String... params){
         this.keyword =  keyword;
         this.description = description;
@@ -121,5 +119,5 @@ public class RockPaperScissors implements Game{
         this.maxParam = maxParam;
         this.params = params;
     }
- }
+  }
 }
