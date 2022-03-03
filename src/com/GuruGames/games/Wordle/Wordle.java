@@ -53,7 +53,6 @@ public class Wordle implements Game {
         } else {
             checkResults = null;
         }
-        //Scanner in = new Scanner(System.in);
 
     }
 
