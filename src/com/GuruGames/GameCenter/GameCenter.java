@@ -94,7 +94,7 @@ public class GameCenter implements Commands {
      * @throws IllegalArgumentException Invalid Game name, .getMessage on error will show that.
      */
     void setCurrentGame(String gameString) throws IllegalArgumentException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-        this.currentGame = GameFactory.parseGame(gameString, currentPlayer.getUsername());
+        this.currentGame = GameFactory.parseGame(gameString);
     }
 
     /**

@@ -51,10 +51,6 @@ public class Player implements Serializable {
                     return new Player(username);
                 }
     }
-
-    public String getUsername() {
-        return username;
-    }
     /**
      * Saves game data to player, and cumulates GameData if necessary
      * @param gameName currentGame.getClass
@@ -117,7 +113,7 @@ public class Player implements Serializable {
                 "username='" + username + '\'' +
                 ", totalWins=" + totalWins +
                 ", totalLosses=" + totalLosses +
-                ", stats=" + stats.toString() +
+                ", stats=" + stats.values() +
                 '}';
     }
 }

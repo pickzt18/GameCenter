@@ -2,6 +2,7 @@ package com.GuruGames.games.RockPaperScissors;
 
 import com.GuruGames.GameCenter.GameCenter;
 import com.GuruGames.games.Game;
+import com.GuruGames.games.GameData;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
@@ -83,6 +84,11 @@ public class RockPaperScissors implements Game{
                 return false;
             }
         }
+        return null;
+    }
+
+    @Override
+    public GameData getGameData() {
         return null;
     }
 

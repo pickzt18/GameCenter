@@ -11,9 +11,9 @@ import java.util.Optional;
  */
 public class fakegame implements Game {
     fakegameData data;
-    public fakegame(String username) {
+    public fakegame() {
         System.out.println("Loading");
-        data = new fakegameData(username);
+        data = new fakegameData();
     }
 
     //Game Implementation, called from client

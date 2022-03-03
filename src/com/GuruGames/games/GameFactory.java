@@ -9,17 +9,17 @@ enum GameEnum {
     GameEnum(Class gameClass){
         this.gameClass = gameClass;
     }
-     Game returnGame(String username) throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        return gameClass.getConstructor().newInstance(username);
+     Game returnGame() throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        return gameClass.getConstructor().newInstance();
     }
 }
 
 public class GameFactory {
-    public static Game parseGame(String gameString, String username) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+    public static Game parseGame(String gameString) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         GameEnum[] gameEnums = GameEnum.values();
         for(GameEnum gameEnum: gameEnums){
             if(gameString.equalsIgnoreCase(gameEnum.toString())){
-                return gameEnum.returnGame(username);
+                return gameEnum.returnGame();
             }
         }
         throw new IllegalArgumentException("Game not found. You can use command getAllGames() to get a list of installed games");
