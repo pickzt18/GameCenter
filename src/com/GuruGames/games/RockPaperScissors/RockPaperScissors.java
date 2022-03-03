@@ -46,6 +46,7 @@ public class RockPaperScissors implements Game{
             if (playerMove != null) {
                 System.out.println("Computer played " + computerMove);
                 if (playerMove.equalsIgnoreCase(computerMove)) {
+                    System.out.println("You tied!");
                     return null;
                 } else if (playerMove.equals("rock")) {
                     if (computerMove.equals("paper")) {
