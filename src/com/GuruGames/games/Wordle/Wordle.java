@@ -1,6 +1,7 @@
 package com.GuruGames.games.Wordle;
 
 import com.GuruGames.games.Game;
+import com.GuruGames.games.GameData;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -30,6 +31,7 @@ public class Wordle implements Game {
     private char[] charGuess;
     private Boolean checkResults;
     private boolean started=false;
+    WordleGameData gameData=new WordleGameData();
 
     public Wordle() throws FileNotFoundException {
         System.out.println("Wordle: Enter start to begin, help to see rules, or quit to return to the main menu.");
@@ -42,7 +44,7 @@ public class Wordle implements Game {
             System.out.print(l + " ");
         }
         System.out.println();
-        System.out.println("Type 'guess' followed by your word.");
+        System.out.println("Type in your word.");
 
         if (WORD.equalsIgnoreCase(globalWordGuess)) {
             winner = true;
@@ -199,18 +201,26 @@ public class Wordle implements Game {
         if (winner) {
             System.out.println(WORD);
             System.out.println("You have won!!!");
+            gameData.wins++;
             if (cheatCount == 1) {
                 System.out.println("But you cheated 1 time!");
             } else if (cheatCount > 1) {
+                gameData.cheatCount+=cheatCount;
                 System.out.println("But you cheated " + cheatCount + " times!");
             }
             return true;
         } else if (gameOver) {
             System.out.println("The word was " + WORD);
             System.out.println("LOSER!!!!!");
+            gameData.losses++;
             return false;
         }
         return checkResults;
+    }
+
+    @Override
+    public GameData getGameData() {
+        return gameData;
     }
 
     @Override
@@ -221,6 +231,7 @@ public class Wordle implements Game {
             runGame(command);
         } else if(command.equalsIgnoreCase("start")&&!started) {
             started=true;
+            System.out.println("Enter a 5 letter guess. If the wordle contains the letter it will be printed in yellow. If the letter is in the correct spot it will be printed in green.");
             throw new IllegalArgumentException("");
         }else{
             throw new IllegalArgumentException("Please enter a 5 letter guess.");
