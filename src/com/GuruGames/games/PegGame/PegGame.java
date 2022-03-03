@@ -20,7 +20,7 @@ public class PegGame implements Game {
     int count = 0;
 
     public PegGame() {
-        System.out.println("Enter 'start' to begin game, 'help' for instructions, or 'quit' to return to the main menu");
+        System.out.println("Enter 'start' to begin game, 'help' for instructions, or 'quit' to select a different game");
     }
 
     /**
@@ -286,7 +286,7 @@ public class PegGame implements Game {
 
     @Override
     public String help() {
-        return "Write move followed by the row of the peg you would like to move, the column of the peg you would like to move, the number of the row you would like to move your peg to and the column that you would like to move your peg to (ex. move 3 2 4 1). A legal move involves jumping one peg (@) over a neighboring peg to rest in a hole (-) on the other side which removes peg that was jumped over. Diagonal jumps are not allowed.";
+        return "Write 'move' followed by the row of the peg you would like to move, the column of the peg you would like to move, the number of the row you would like to move your peg to and the column that you would like to move your peg to (ex. move 3 2 4 1). A legal move involves jumping one peg (@) over a neighboring peg to rest in a hole (-) on the other side which removes peg that was jumped over. Diagonal jumps are not allowed.";
     }
 
     @Override
