@@ -46,39 +46,40 @@ public class RockPaperScissors implements Game{
             if (playerMove != null) {
                 System.out.println("Computer played " + computerMove);
                 if (playerMove.equalsIgnoreCase(computerMove)) {
+                    System.out.println("You tied!");
                     return null;
                 } else if (playerMove.equals("rock")) {
                     if (computerMove.equals("paper")) {
                         System.out.println("You lose!");
-                        losses++;
+                        gameData.losses++;
                         return false;
 
                     } else if (computerMove.equals("scissors")) {
                         System.out.println("You win!");
-                        wins++;
+                        gameData.wins++;
                         return true;
                     }
                 } else if (playerMove.equals("paper")) {
                     if (computerMove.equals("rock")) {
                         System.out.println("You win!");
-                        wins++;
+                        gameData.wins++;
                         return true;
 
 
                     } else if (computerMove.equals("scissors")) {
                         System.out.println("You lose!");
-                        losses++;
+                        gameData.losses++;
                         return false;
                     }
                 } else if (playerMove.equals("scissors")) {
                     if (computerMove.equals("paper")) {
                         System.out.println("You win!");
-                        wins++;
+                        gameData.wins++;
                         return true;
 
                     } else if (computerMove.equals("rock")) {
                         System.out.println("You lose!");
-                        losses++;
+                        gameData.losses++;
                         return false;
                     }
                 }

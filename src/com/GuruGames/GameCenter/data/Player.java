@@ -98,7 +98,7 @@ public class Player implements Serializable {
      */
     public String checkStats(String gameString)  throws IllegalArgumentException{
         for(Class<? extends Game> gameClass: stats.keySet()){
-            if(gameString.equalsIgnoreCase(gameClass.toString())) return stats.get(gameClass).toString();
+            if(gameString.equalsIgnoreCase(gameClass.getSimpleName())) return stats.get(gameClass).toString();
         }
         throw new IllegalArgumentException("Stats not found. You either haven't played the selected game or entered it in incorrectly");
     }
