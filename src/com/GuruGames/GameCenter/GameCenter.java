@@ -62,12 +62,12 @@ public class GameCenter implements Commands {
         }
         while(true) {
             try {
-                System.out.println("Enter your username to log in or make an account");
+                System.out.println("Welcome to the GuruGames Center! Please enter a username to make an account:");
                 gameCenter.currentPlayer = Player.logIn(gameCenter.getScannerInput());
             } catch (IllegalArgumentException e){
                 System.out.println(e.getMessage());
             }
-            System.out.println("Welcome to the GuruGames Center, please enter a command or type help for available commands");
+            System.out.println("Enter 'game' and select what you would like to play (wordle, pegsolitaire or rps) or type help for available commands:");
             return gameCenter;
         }
     }
@@ -120,10 +120,12 @@ public class GameCenter implements Commands {
                 } catch (IllegalArgumentException e) {
                     System.out.println(e.getMessage());
                 }
+                if (gameOver == null) {
                 gameOver = currentGame.checkResults();
-            } ;
+            }
+            };
             currentPlayer.saveStats(currentGame.getClass(), currentGame.getGameData());
-            System.out.println("Welcome to the GuruGames Center, please enter a command or type help for available commands");
+            System.out.println("Welcome to the GuruGames Center, please enter 'game' and select what you would like to play (wordle, pegsolitaire or rps) or type help for available commands");
             currentGame = null;
 
         }

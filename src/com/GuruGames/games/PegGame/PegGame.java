@@ -20,7 +20,7 @@ public class PegGame implements Game {
     int count = 0;
 
     public PegGame() {
-        System.out.println("Enter 'start' to begin game or enter help for instructions");
+        System.out.println("Enter 'start' to begin game, 'help' for instructions, or 'quit' to return to the main menu");
     }
 
     /**
