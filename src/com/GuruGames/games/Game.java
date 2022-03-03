@@ -17,4 +17,9 @@ public interface Game extends Commands {
      * @return Boolean object true or false for win and lose condition respectively or null for neither being met
      */
     Boolean checkResults();
+
+    /**
+     * Returns GameData object
+     */
+    GameData getGameData();
 }

@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class RockPaperScissors {
     public static void main(String[] args) {
+        String[] rps = {"r", "p", "s"};
 
         Scanner scanner = new Scanner(System.in);
         
@@ -13,7 +14,6 @@ public class RockPaperScissors {
         int tie = 0;
 
         while (true) {
-            String[] rps = {"r", "p", "s"};
             String computerMove = rps[new Random().nextInt(rps.length)];
 
             String playerMove;

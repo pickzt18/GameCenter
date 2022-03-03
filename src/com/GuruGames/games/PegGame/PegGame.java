@@ -2,6 +2,7 @@ package com.GuruGames.games.PegGame;
 
 import com.GuruGames.GameCenter.GameCenter;
 import com.GuruGames.games.Game;
+import com.GuruGames.games.GameData;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Scanner;
@@ -189,6 +190,11 @@ public class PegGame implements Game {
     @Override
     public Boolean checkResults() {
         return checkResults;
+    }
+
+    @Override
+    public GameData getGameData() {
+        return null;
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.GuruGames.games.GameFactory;
 import com.GuruGames.games.Commands;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -19,12 +20,12 @@ public class GameCenter implements Commands {
     IllegalArgumentException e;
     public static Scanner in;
     public Player currentPlayer;
+    Boolean gameOver = null;
 
     /**
      * not intended for construction, should be called with appropriate input. As of now, we only take Scanners.
      */
     GameCenter(){
-        System.out.println("Welcome to the GuruGames Center, please enter a command or type help for available commands");
         //currentPlayer = new Player(getScannerInput());
     }
 
@@ -59,6 +60,9 @@ public class GameCenter implements Commands {
         } else if(gameCenter.in==null){
             gameCenter.in=in;
         }
+        System.out.println("Enter your username to log in or make an account");
+        gameCenter.currentPlayer= Player.logIn(gameCenter.getScannerInput());
+        System.out.println("Welcome to the GuruGames Center, please enter a command or type help for available commands");
         return gameCenter;
     }
 
@@ -93,9 +97,9 @@ public class GameCenter implements Commands {
      * <p>Error messages are printed to the console</p>
      */
     void startGame() {
-    Boolean gameOver = null;
+        gameOver=null;
         if(in!=null) {
-            do {
+            while (gameOver == null && currentGame !=null){
                 currentGame.playGame();
                 try {
                     parseCommand(gameCenter.getScannerInput());
@@ -111,16 +115,15 @@ public class GameCenter implements Commands {
                     System.out.println(e.getMessage());
                 }
                 gameOver = currentGame.checkResults();
-            } while (gameOver == null);
+            } ;
+            currentPlayer.saveStats(currentGame.getClass(), currentGame.getGameData());
             System.out.println("Welcome to the GuruGames Center, please enter a command or type help for available commands");
+            currentGame = null;
 
         }
         else {
             System.out.println("Games require input! Currently we only support Scanners, add a Scanner to your get instance method to enable functionality");
         }
-//        currentPlayer.
-
-        currentGame = null;
     }
 
     //command parser, takes a command string then multiple parameter strings.
@@ -147,7 +150,17 @@ public class GameCenter implements Commands {
             if (command.equalsIgnoreCase("help")) System.out.println(help());
             else if (command.equalsIgnoreCase(LocalCommands.startGame.keyword)) {
                 startGame();
-            } else if (command.equalsIgnoreCase(LocalCommands.quitProgram.keyword)) System.exit(0);
+            } else if(command.equalsIgnoreCase(LocalCommands.quitGame.keyword)){
+                currentPlayer.saveStats(currentGame.getClass(), currentGame.getGameData());
+                gameOver = false;
+            } else if (command.equalsIgnoreCase(LocalCommands.closeProgram.keyword)) {
+                currentPlayer.storeStats();
+                System.exit(0);
+            } else if(command.equalsIgnoreCase(LocalCommands.savePlayer.keyword)) {
+                currentPlayer.storeStats();
+            } else if(command.equalsIgnoreCase(LocalCommands.getStats.keyword)){
+                System.out.println(currentPlayer.checkStats());
+            }
             else { //command not found
                 if(e!=null) throw e;
                 throw new IllegalArgumentException("The command specified doesn't exist or takes parameters. You can type 'help' for a list of commands.");
@@ -155,6 +168,8 @@ public class GameCenter implements Commands {
         } else if (params.length == 1) { //all 1 arg commands
             if (command.equalsIgnoreCase(LocalCommands.setCurrentGame.keyword)) {
                 setCurrentGame(params[0]);
+            } else if(command.equalsIgnoreCase(LocalCommands.getStats.keyword)){
+                currentPlayer.checkStats(params[0]);
             }
             else { //command not found
                 if(e!=null) throw e;
@@ -182,9 +197,12 @@ public class GameCenter implements Commands {
      * <p>help() gathers all information found here</p>
      */
     enum LocalCommands {
-        setCurrentGame("game","Selects a game. Available games are: "+ GameFactory.getAllGames(), 1,1, "fakegame, Wordle, PegSolitaire, RPS"),
+        setCurrentGame("game","Selects a game. Available games are: "+ GameFactory.getAllGames(), 1,1, "fakegame", "Wordle", "PegSolitaire", "RPS"),
         startGame("start", "Starts the selected game"),
-        quitProgram("quit", "Stops GuruGameCenter program");
+        quitGame("quit", "Returns to the GuruGameCenter"),
+        savePlayer("save", "Saves user data to disk"),
+        getStats("stats", "displays selected stats",0,1,null, "fakegame", "Wordle", "PegSolitaire", "RPS"),
+        closeProgram("close", "Stops GuruGameCenter program");
         String keyword;
         String description;
         int minParam;
@@ -215,6 +233,17 @@ public class GameCenter implements Commands {
             this.maxParam = maxParam;
             this.minParam = minParam;
             this.parameters = parameters;
+        }
+
+        @Override
+        public String toString() {
+            return "LocalCommands{" +
+                    "keyword='" + keyword + '\'' +
+                    ", description='" + description + '\'' +
+                    ", minParam=" + minParam +
+                    ", maxParam=" + maxParam +
+                    ", parameters=" + Arrays.toString(parameters) +
+                    '}';
         }
     }
 }
