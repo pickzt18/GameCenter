@@ -93,7 +93,6 @@ public class PegGame implements Game {
             board[middleRow][middleColumn] = '-';
 
         }
-        displayBoard(board);
         System.out.println("Moved a peg from row " + (rowInput + 1) + ", column " + (columnInput + 1) + " to row " + (rowDest + 1) + ", column " + (columnDest + 1));
 
 
