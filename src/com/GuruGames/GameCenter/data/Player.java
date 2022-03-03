@@ -17,7 +17,7 @@ public class Player implements Serializable {
     int totalWins;
     int totalLosses;
     //Game-specific stats
-    Map<Class<? extends Game>, GameData> stats = new HashMap<>(){};
+    Map<Class<? extends Game>, GameData> stats = new HashMap<>();
     //data file objects
     File characterData;
     File visualData;
@@ -98,10 +98,7 @@ public class Player implements Serializable {
      */
     public String checkStats(String gameString)  throws IllegalArgumentException{
         for(Class<? extends Game> gameClass: stats.keySet()){
-
-            if(gameString.equalsIgnoreCase(gameClass.getName())) {
-                return stats.get(gameClass).toString();
-            }
+            if(gameString.equalsIgnoreCase(gameClass.getSimpleName())) return stats.get(gameClass).toString();
         }
         throw new IllegalArgumentException("Stats not found. You either haven't played the selected game or entered it in incorrectly");
     }

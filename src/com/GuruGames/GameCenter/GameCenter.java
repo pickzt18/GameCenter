@@ -62,13 +62,15 @@ public class GameCenter implements Commands {
         }
         while(true) {
             try {
-                System.out.println("Enter your username to log in or make an account");
+                System.out.println("Welcome to the GuruGames Center! Please enter a username to make an account:");
                 gameCenter.currentPlayer = Player.logIn(gameCenter.getScannerInput());
             } catch (IllegalArgumentException e){
                 System.out.println(e.getMessage());
             }
-            System.out.println("Welcome to the GuruGames Center, please enter a command or type help for available commands");
-            if(gameCenter.currentPlayer!= null) return gameCenter;
+            System.out.println("Enter 'game' and select what you would like to play (wordle, pegsolitaire or rps), type 'help' for available commands, or type 'stats' to see your statistics, or enter 'close' to end Game Center:");
+            if(gameCenter.currentPlayer != null) {
+                return gameCenter;
+            }
         }
     }
 
@@ -120,10 +122,12 @@ public class GameCenter implements Commands {
                 } catch (IllegalArgumentException e) {
                     System.out.println(e.getMessage());
                 }
+                if (gameOver == null) {
                 gameOver = currentGame.checkResults();
-            } ;
+            }
+            }
             currentPlayer.saveStats(currentGame.getClass(), currentGame.getGameData());
-            System.out.println("Welcome to the GuruGames Center, please enter a command or type help for available commands");
+            System.out.println("Enter 'game' and select what you would like to play (wordle, pegsolitaire or rps), type 'help' for available commands, type 'stats' to see your statistics, or enter 'close' to end Game Center:");
             currentGame = null;
 
         }
@@ -211,11 +215,11 @@ public class GameCenter implements Commands {
      * <p>help() gathers all information found here</p>
      */
     enum LocalCommands {
-        setCurrentGame("game","Selects a game. Available games are: "+ GameFactory.getAllGames(), 1,1, "fakegame", "Wordle", "PegSolitaire", "RPS"),
+        setCurrentGame("game","Selects a game. Available games are: "+ Arrays.toString(GameFactory.getAllGames()), 1,1,  "Wordle", "PegSolitaire", "RPS"),
         startGame("start", "Starts the selected game"),
         quitGame("quit", "Returns to the GuruGameCenter"),
         savePlayer("save", "Saves user data to disk"),
-        getStats("stats", "displays selected stats",0,1,null, "fakegame", "Wordle", "PegSolitaire", "RPS"),
+        getStats("stats", "displays selected stats",0,1,null,  "Wordle", "PegSolitaire", "RPS"),
         closeProgram("close", "Stops GuruGameCenter program");
         String keyword;
         String description;
@@ -254,13 +258,12 @@ public class GameCenter implements Commands {
          */
         @Override
         public String toString() {
-            return "LocalCommands{" +
+            return
                     "keyword='" + keyword + '\'' +
                     ", description='" + description + '\'' +
                     ", minParam=" + minParam +
                     ", maxParam=" + maxParam +
-                    ", parameters=" + Arrays.toString(parameters) +
-                    '}';
+                    ", parameters=" + Arrays.toString(parameters);
         }
     }
 }
