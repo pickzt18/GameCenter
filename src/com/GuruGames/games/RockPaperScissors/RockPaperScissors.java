@@ -5,6 +5,7 @@ import com.GuruGames.games.Game;
 import com.GuruGames.games.GameData;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -33,13 +34,12 @@ public class RockPaperScissors implements Game{
 
     public void isValidHand(String param) throws IllegalArgumentException {
         for(String hand:rps)
-
         {
             if (param.equalsIgnoreCase(hand)) {
                 playerMove = param;
             }
         }
-               if (playerMove== null)throw new IllegalArgumentException("Not a hand");
+        if (playerMove== null)throw new IllegalArgumentException("Not a hand");
     }
 
 
@@ -65,7 +65,6 @@ public class RockPaperScissors implements Game{
                 System.out.println("You win!");
                 wins++;
                 return true;
-
 
             } else if (computerMove.equals("scissors")) {
                 System.out.println("You lose!");
@@ -96,7 +95,6 @@ public class RockPaperScissors implements Game{
     public void parseCommand(String command, String... params) throws IllegalArgumentException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         if (command.equalsIgnoreCase(LocalCommand.shoot.keyword)) {
             isValidHand(params[0]);
-
         }
         else{
             throw new IllegalArgumentException("Command not found");

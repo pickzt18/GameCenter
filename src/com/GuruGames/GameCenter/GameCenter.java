@@ -68,7 +68,7 @@ public class GameCenter implements Commands {
                 System.out.println(e.getMessage());
             }
             System.out.println("Welcome to the GuruGames Center, please enter a command or type help for available commands");
-            return gameCenter;
+            if(gameCenter.currentPlayer!= null) return gameCenter;
         }
     }
 
@@ -197,10 +197,12 @@ public class GameCenter implements Commands {
      */
     @Override
     public String help() {
-        for(LocalCommands string : LocalCommands.values()){
-            return string.toString();
+        StringBuilder stringBuilder = new StringBuilder();
+        for(LocalCommands localCommands : LocalCommands.values()){
+            stringBuilder.append(localCommands);
+            stringBuilder.append(System.getProperty("line.separator"));
         }
-        return "help";
+        return stringBuilder.toString();
     }
 
     /**
