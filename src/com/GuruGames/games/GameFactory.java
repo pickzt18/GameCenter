@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationTargetException;
  * enum of Game
  */
 enum GameEnum {
-    fakegame(com.GuruGames.games.sample.fakegame.class), Wordle(com.GuruGames.games.Wordle.Wordle.class), PegSolitaire(com.GuruGames.games.PegGame.PegGame.class), RPS(com.GuruGames.games.RockPaperScissors.RockPaperScissors.class);
+    Wordle(com.GuruGames.games.Wordle.Wordle.class), PegSolitaire(com.GuruGames.games.PegGame.PegGame.class), RPS(com.GuruGames.games.RockPaperScissors.RockPaperScissors.class);
     Class<? extends Game> gameClass;
     GameEnum(Class gameClass){
         this.gameClass = gameClass;

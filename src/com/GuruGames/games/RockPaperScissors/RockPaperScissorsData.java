@@ -4,6 +4,7 @@ import com.GuruGames.games.GameData;
 
 import java.io.Serializable;
 
+
 public class RockPaperScissorsData extends GameData implements Serializable {
 
     @Override
@@ -20,3 +21,5 @@ public class RockPaperScissorsData extends GameData implements Serializable {
                 "";
     }
 }
+
+
