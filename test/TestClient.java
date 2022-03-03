@@ -3,6 +3,9 @@ import com.GuruGames.GameCenter.GameCenter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Scanner;
 
+/**
+ * Run game with only access to GameCenter
+ */
 public class TestClient {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);

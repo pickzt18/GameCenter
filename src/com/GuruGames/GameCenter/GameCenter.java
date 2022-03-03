@@ -60,10 +60,16 @@ public class GameCenter implements Commands {
         } else if(gameCenter.in==null){
             gameCenter.in=in;
         }
-        System.out.println("Enter your username to log in or make an account");
-        gameCenter.currentPlayer= Player.logIn(gameCenter.getScannerInput());
-        System.out.println("Welcome to the GuruGames Center, please enter a command or type help for available commands");
-        return gameCenter;
+        while(true) {
+            try {
+                System.out.println("Enter your username to log in or make an account");
+                gameCenter.currentPlayer = Player.logIn(gameCenter.getScannerInput());
+            } catch (IllegalArgumentException e){
+                System.out.println(e.getMessage());
+            }
+            System.out.println("Welcome to the GuruGames Center, please enter a command or type help for available commands");
+            return gameCenter;
+        }
     }
 
     /**
@@ -88,7 +94,7 @@ public class GameCenter implements Commands {
      * @throws IllegalArgumentException Invalid Game name, .getMessage on error will show that.
      */
     void setCurrentGame(String gameString) throws IllegalArgumentException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-        this.currentGame = GameFactory.parseGame(gameString);
+        this.currentGame = GameFactory.parseGame(gameString, currentPlayer.getUsername());
     }
 
     /**
@@ -151,6 +157,9 @@ public class GameCenter implements Commands {
             else if (command.equalsIgnoreCase(LocalCommands.startGame.keyword)) {
                 startGame();
             } else if(command.equalsIgnoreCase(LocalCommands.quitGame.keyword)){
+                if(currentGame==null){
+                    parseCommand("close");
+                }
                 currentPlayer.saveStats(currentGame.getClass(), currentGame.getGameData());
                 gameOver = false;
             } else if (command.equalsIgnoreCase(LocalCommands.closeProgram.keyword)) {
@@ -188,7 +197,10 @@ public class GameCenter implements Commands {
      */
     @Override
     public String help() {
-        return "commands go here"; ///////
+        for(LocalCommands string : LocalCommands.values()){
+            return string.toString();
+        }
+        return "help";
     }
 
     /**
@@ -235,6 +247,9 @@ public class GameCenter implements Commands {
             this.parameters = parameters;
         }
 
+        /**
+         * print it pretty
+         */
         @Override
         public String toString() {
             return "LocalCommands{" +

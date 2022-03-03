@@ -5,6 +5,9 @@ import com.GuruGames.games.GameData;
 class fakegameData extends GameData {
     String username;
     int misinputs;
+    fakegameData(String username){
+        this.username=username;
+    }
     @Override
     public void addStats(GameData that) {
         if(this.username.equals(((fakegameData)that).username)){
