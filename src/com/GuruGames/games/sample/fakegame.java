@@ -6,6 +6,9 @@ import com.GuruGames.games.GameData;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
+/**
+ * fake implementation for reference when adding your own game to GuruGameCenter
+ */
 public class fakegame implements Game {
     fakegameData data;
     public fakegame() {
