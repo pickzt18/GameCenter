@@ -20,13 +20,13 @@ public class RockPaperScissors implements Game{
 
         public RockPaperScissors(){
             System.out.println("Welcome to Rock Paper Scissors");
-            System.out.println("Press Start to continue");
+            System.out.println("Type 'start' to continue");
         }
         public void playGame() {
 
             computerMove = rps[new Random().nextInt(rps.length)];
             playerMove = null;
-            System.out.println("Please enter your move");
+            System.out.println("Please enter your move starting with 'shoot' (rock, paper, or scissors)");
 
         }
 
@@ -43,46 +43,49 @@ public class RockPaperScissors implements Game{
 
     @Override
     public Boolean checkResults() {
-        System.out.println("Computer played " + computerMove);
-        if (playerMove.equalsIgnoreCase(computerMove)) {
-            return null;
-        } else if (playerMove.equals("rock")) {
-            if (computerMove.equals("paper")) {
-                System.out.println("You lose!");
-                losses++;
-                return false;
+            if (playerMove != null) {
+                System.out.println("Computer played " + computerMove);
+                if (playerMove.equalsIgnoreCase(computerMove)) {
+                    return null;
+                } else if (playerMove.equals("rock")) {
+                    if (computerMove.equals("paper")) {
+                        System.out.println("You lose!");
+                        losses++;
+                        return false;
 
-            } else if (computerMove.equals("scissors")) {
-                System.out.println("You win!");
-                wins++;
-                return true;
+                    } else if (computerMove.equals("scissors")) {
+                        System.out.println("You win!");
+                        wins++;
+                        return true;
+                    }
+                } else if (playerMove.equals("paper")) {
+                    if (computerMove.equals("rock")) {
+                        System.out.println("You win!");
+                        wins++;
+                        return true;
+
+
+                    } else if (computerMove.equals("scissors")) {
+                        System.out.println("You lose!");
+                        losses++;
+                        return false;
+                    }
+                } else if (playerMove.equals("scissors")) {
+                    if (computerMove.equals("paper")) {
+                        System.out.println("You win!");
+                        wins++;
+                        return true;
+
+                    } else if (computerMove.equals("rock")) {
+                        System.out.println("You lose!");
+                        losses++;
+                        return false;
+                    }
+                }
             }
-        } else if (playerMove.equals("paper")) {
-            if (computerMove.equals("rock")) {
-                System.out.println("You win!");
-                wins++;
-                return true;
-
-
-            } else if (computerMove.equals("scissors")) {
-                System.out.println("You lose!");
-                losses++;
-                return false;
-            }
-        } else if (playerMove.equals("scissors")) {
-            if (computerMove.equals("paper")) {
-                System.out.println("You win!");
-                wins++;
-                return true;
-
-            } else if (computerMove.equals("rock")) {
-                System.out.println("You lose!");
-                losses++;
-                return false;
-            }
-        }
         return null;
     }
+
 
     @Override
     public GameData getGameData() {
@@ -93,7 +96,8 @@ public class RockPaperScissors implements Game{
     public void parseCommand(String command, String... params) throws IllegalArgumentException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         if (command.equalsIgnoreCase(LocalCommand.shoot.keyword)) {
             isValidHand(params[0]);
-
+        } else if (command.equalsIgnoreCase("help")) {
+                System.out.println(help());
         }
         else{
             throw new IllegalArgumentException("Command not found");
@@ -102,10 +106,10 @@ public class RockPaperScissors implements Game{
 
     @Override
     public String help() {
-        return "r(Rock), p(Paper), or s(Scissors)";
+        return "Please enter your move starting with 'shoot' (rock, paper, or scissors)";
     }
     enum LocalCommand{
-    shoot("shoot","shoot rock, paper or scissor",1,1,"Rock","Paper","Scissors");
+    shoot("shoot","shoot rock, paper or scissors",1,1,"Rock","Paper","Scissors");
     String keyword;
     String description;
     int minParam;
