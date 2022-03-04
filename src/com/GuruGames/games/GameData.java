@@ -1,6 +1,8 @@
 package com.GuruGames.games;
 
-public abstract class GameData {
+import java.io.Serializable;
+
+public abstract class GameData implements Serializable {
     public int wins;
     public int losses;
 
