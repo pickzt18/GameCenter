@@ -99,55 +99,45 @@ public class Wordle implements Game {
     /**
      * Checks to see whether your guess is correct and adds "+","=","-" to an array to determine which color a letter should be printed in.
      */
-    protected void checkGuess(){
+    protected void checkGuess() {
+        showCorrect = new char[]{'-', '-', '-', '-', '-'};
+        checksPast = new boolean[]{false, false, false, false, false};
         for (int i = 0; i < wordle.length; i++) {
-            for (int j = 0; j < charGuess.length; j++) {
-                if (wordle[j] == (charGuess[i])) {
-                    if (i != j) {
-                        for (int k = 0; k <= i; k++) {
-                            if (checksPast[k]) {
-                                if (charGuess[i] == charGuess[k]) {
-                                    if (showCorrect[k] != '=') {
-                                        showCorrect[k] = '-';
-                                        charGood = true;
-                                    }
-                                }
-                            }
-                        }
-                        if (charGood) {
-                            showCorrect[i] = '+';
-                            checksPast[i] = true;
-                            break;
-                        }
-                        break;
-
-                    } else {
-                        if (i > 0) {
+            if (wordle[i] == charGuess[i]) {
+                showCorrect[i] = '=';
+                checksPast[i] = true;
+            }
+        }
+        for (int i = 0; i < wordle.length; i++) {
+            if (showCorrect[i] != '=') {
+                for (int j = 0; j < charGuess.length; j++) {
+                    if (wordle[j] == (charGuess[i])&&showCorrect[j]!='=') {
+                        if (i != j) {
                             for (int k = 0; k <= i; k++) {
                                 if (checksPast[k]) {
                                     if (charGuess[i] == charGuess[k]) {
-                                        if (showCorrect[k] != '=') {
+                                        if (showCorrect[k] != '=' && i != k ) {
                                             showCorrect[k] = '-';
                                             charGood = true;
                                         }
                                     }
+                                } else if (charGuess[i] == charGuess[k]) {
+                                    charGood = true;
+                                } else {
+                                    charGood = false;
                                 }
                             }
                             if (charGood) {
-                                showCorrect[i] = '=';
+                                showCorrect[i] = '+';
                                 checksPast[i] = true;
-                                break;
+                                charGood = false;
                             }
-                            break;
-
-                        } else {
-                            showCorrect[i] = '=';
-                            checksPast[i] = true;
                         }
+
                     }
                 }
-            }
 
+            }
         }
     }
     protected void printGuess(){
